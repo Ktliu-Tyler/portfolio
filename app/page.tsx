@@ -63,7 +63,7 @@ export default function Home() {
             {/* Main Title */}
             <motion.div variants={itemVariants}>
               <h1 className="text-6xl md:text-7xl font-bold leading-tight">
-                Hi, I'm <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Tyler</span>
+                Hi, I&apos;m <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Tyler</span>
               </h1>
             </motion.div>
 
@@ -232,23 +232,29 @@ export default function Home() {
               image: '🤖',
             },
           ].map((project, i) => (
-            <motion.a
+            <Link
               key={i}
               href="/projects"
-              variants={itemVariants}
               className="p-8 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-blue-600 transition-all group cursor-pointer hover:shadow-lg"
             >
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">{project.image}</div>
-              <h3 className="text-2xl font-bold mb-2 group-hover:text-blue-600 transition">{project.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
-              <div className="flex gap-2">
-                {project.tags.map((tag, j) => (
-                  <span key={j} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-sm">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </motion.a>
+              <motion.div
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">{project.image}</div>
+                <h3 className="text-2xl font-bold mb-2 group-hover:text-blue-600 transition">{project.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
+                <div className="flex gap-2">
+                  {project.tags.map((tag, j) => (
+                    <span key={j} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-sm">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </motion.div>
 
