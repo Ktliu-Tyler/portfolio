@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -16,19 +17,19 @@ export default function RootLayout({
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50">
         <nav className="border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" className="text-2xl font-bold">
+            <Link href="/" className="text-2xl font-bold">
               Tyler
-            </a>
+            </Link>
             <div className="flex gap-6">
-              <a href="/projects" className="hover:text-blue-600 transition">
+              <Link href="/projects" className="hover:text-blue-600 transition">
                 作品集
-              </a>
-              <a href="/blog" className="hover:text-blue-600 transition">
+              </Link>
+              <Link href="/blog" className="hover:text-blue-600 transition">
                 部落格
-              </a>
-              <a href="/notes" className="hover:text-blue-600 transition">
+              </Link>
+              <Link href="/notes" className="hover:text-blue-600 transition">
                 紀錄
-              </a>
+              </Link>
             </div>
           </div>
         </nav>
