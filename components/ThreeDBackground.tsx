@@ -5,9 +5,6 @@ import * as THREE from 'three'
 
 export default function ThreeDBackground() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const sceneRef = useRef<THREE.Scene | null>(null)
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const cubesRef = useRef<THREE.Mesh[]>([])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -15,7 +12,6 @@ export default function ThreeDBackground() {
     // Scene setup
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0xfafafa)
-    sceneRef.current = scene
 
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -29,10 +25,9 @@ export default function ThreeDBackground() {
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
     containerRef.current.appendChild(renderer.domElement)
-    rendererRef.current = renderer
 
     // Create rotating cubes
-    const cubes = []
+    const cubes: THREE.Mesh[] = []
     const colors = [0x3b82f6, 0x06b6d4, 0x8b5cf6, 0xec4899]
 
     for (let i = 0; i < 4; i++) {
@@ -48,7 +43,6 @@ export default function ThreeDBackground() {
       scene.add(cube)
       cubes.push(cube)
     }
-    cubesRef.current = cubes
 
     // Lighting
     const light1 = new THREE.DirectionalLight(0xffffff, 1)
@@ -92,7 +86,9 @@ export default function ThreeDBackground() {
     return () => {
       window.removeEventListener('resize', handleResize)
       renderer.dispose()
-      containerRef.current?.removeChild(renderer.domElement)
+      if (containerRef.current && renderer.domElement.parentNode === containerRef.current) {
+        containerRef.current.removeChild(renderer.domElement)
+      }
     }
   }, [])
 
