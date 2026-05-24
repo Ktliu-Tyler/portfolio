@@ -2,6 +2,15 @@
 
 Last updated: 2026-05-24
 
+## 2026-05-24 Project Ordering And Article Polish
+
+- Reordered the Projects page timeline so the page reads from newest work to oldest work.
+- Consolidated all blog article routes through `app/blog/[slug]/page.tsx`.
+- Removed the three older standalone article pages that had inconsistent layout and encoding noise.
+- Rewrote the article data in `lib/articles.ts` with cleaner technical framing, shorter sections, and easier-to-scan bullets.
+- Updated `components/BlogArticleLayout.tsx` and the dynamic article renderer for a more readable article page structure.
+- Verified the update with lint, production build, route smoke checks, whitespace checks, and sensitive string scanning.
+
 ## 2026-05-24 Follow-Up Maintenance
 
 - Removed the NTU Racing lead role from the home-page typewriter rotation.

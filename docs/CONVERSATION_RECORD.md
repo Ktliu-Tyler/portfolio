@@ -15,6 +15,7 @@ This document summarizes the recovery and hardening work requested during the po
 7. Blog and development-history articles were requested based on public GitHub repository records.
 8. Implementation, documentation, workflow notes, error records, verification, commit, and GitHub push were requested.
 9. A later correction requested removing the NTU Racing lead role from the home-page typewriter rotation.
+10. A follow-up requested newest-to-oldest project ordering and cleaner, more professional article layout and wording.
 
 ## Completed Recovery Decisions
 
@@ -36,6 +37,7 @@ This document summarizes the recovery and hardening work requested during the po
 - Added technical articles for vehicle telemetry, CAN decoding, GPS acquisition, hardware protocols, IoT control, and stock analysis tooling.
 - Added work log, development workflow, and error log documentation.
 - Removed the NTU Racing lead role from the homepage typewriter rotation while leaving the role represented in the profile section.
+- Reordered the project timeline from newest to oldest and consolidated article pages into one structured dynamic renderer.
 
 ## Traceability Notes
 
@@ -72,4 +74,3 @@ Then verify the primary routes:
 /blog/can-protocol
 /blog/dev-journey
 ```
-

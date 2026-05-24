@@ -24,20 +24,24 @@ interface YearSection {
 
 const projectsByYear: YearSection[] = [
   {
-    yearKey: 'y2021',
+    yearKey: 'y2026',
     projects: [
-      { key: 'laser', link: 'https://github.com/Ktliu-Tyler/LaserRecognition', image: null, status: 'public' as const },
-      { key: 'space_fighter', link: 'https://github.com/Ktliu-Tyler/Space-Fighter', image: '/images/game.png', status: 'public' as const },
-      { key: 'space_travel', link: 'https://github.com/Ktliu-Tyler/Space_travel', image: null, status: 'public' as const },
-      { key: 'pixy_car', link: 'https://github.com/Ktliu-Tyler/Pixy-Line-tracking-drifting-car', image: '/images/embedded.png', status: 'public' as const },
+      { key: 'portfolio', link: 'https://github.com/Ktliu-Tyler/portfolio', image: null, status: 'public' as const },
+      { key: 'stock', link: 'https://github.com/Ktliu-Tyler/Stock-Analysis-Taiwan', image: '/images/data.png', status: 'public' as const },
+      { key: 'motor', link: 'https://github.com/Ktliu-Tyler/Simplexmotion-pymodbusRS485', image: '/images/embedded.png', status: 'public' as const },
+      { key: 'make_ntu', link: 'https://github.com/Ktliu-Tyler/MakeNTU_NXP_AVNET', image: '/images/embedded.png', status: 'public' as const },
+      { key: 'can', link: 'https://github.com/Ktliu-Tyler/CANdecoder', image: '/images/racing.png', status: 'public' as const },
+      { key: 'gps_nturt', link: 'https://github.com/Ktliu-Tyler/GPS_nturt', image: null, status: 'public' as const },
+      { key: 'remote_monitor', link: 'https://github.com/Ktliu-Tyler/nturacing_remote_monitor', image: '/images/racing.png', status: 'public' as const },
     ],
   },
   {
-    yearKey: 'y2022',
+    yearKey: 'y2025',
     projects: [
-      { key: 'music', link: 'https://github.com/Ktliu-Tyler/MusicPlayer', image: null, status: 'public' as const },
-      { key: 'model', link: 'https://github.com/Ktliu-Tyler/Model-Creater', image: null, status: 'public' as const },
-      { key: 'bird', link: 'https://github.com/Ktliu-Tyler/bird_sound_recognized', image: null, status: 'public' as const },
+      { key: 'rpi_can', link: 'https://github.com/Ktliu-Tyler/rpi_can_monitor', image: '/images/racing.png', status: 'public' as const },
+      { key: 'gps_tracker', link: 'https://github.com/Ktliu-Tyler/GPS_tracker', image: '/images/embedded.png', status: 'public' as const },
+      { key: 'hospital', link: 'https://github.com/Ktliu-Tyler/HospitalBED_transportation-system', image: null, status: 'public' as const },
+      { key: 'iot_ctrl', link: 'https://github.com/Ktliu-Tyler/IOT_controller', image: '/images/iot.png', status: 'public' as const },
     ],
   },
   {
@@ -49,24 +53,20 @@ const projectsByYear: YearSection[] = [
     ],
   },
   {
-    yearKey: 'y2025',
+    yearKey: 'y2022',
     projects: [
-      { key: 'iot_ctrl', link: 'https://github.com/Ktliu-Tyler/IOT_controller', image: '/images/iot.png', status: 'public' as const },
-      { key: 'hospital', link: 'https://github.com/Ktliu-Tyler/HospitalBED_transportation-system', image: null, status: 'public' as const },
-      { key: 'gps_tracker', link: 'https://github.com/Ktliu-Tyler/GPS_tracker', image: '/images/embedded.png', status: 'public' as const },
-      { key: 'rpi_can', link: 'https://github.com/Ktliu-Tyler/rpi_can_monitor', image: '/images/racing.png', status: 'public' as const },
+      { key: 'bird', link: 'https://github.com/Ktliu-Tyler/bird_sound_recognized', image: null, status: 'public' as const },
+      { key: 'model', link: 'https://github.com/Ktliu-Tyler/Model-Creater', image: null, status: 'public' as const },
+      { key: 'music', link: 'https://github.com/Ktliu-Tyler/MusicPlayer', image: null, status: 'public' as const },
     ],
   },
   {
-    yearKey: 'y2026',
+    yearKey: 'y2021',
     projects: [
-      { key: 'remote_monitor', link: 'https://github.com/Ktliu-Tyler/nturacing_remote_monitor', image: '/images/racing.png', status: 'public' as const },
-      { key: 'gps_nturt', link: 'https://github.com/Ktliu-Tyler/GPS_nturt', image: null, status: 'public' as const },
-      { key: 'can', link: 'https://github.com/Ktliu-Tyler/CANdecoder', image: '/images/racing.png', status: 'public' as const },
-      { key: 'make_ntu', link: 'https://github.com/Ktliu-Tyler/MakeNTU_NXP_AVNET', image: '/images/embedded.png', status: 'public' as const },
-      { key: 'motor', link: 'https://github.com/Ktliu-Tyler/Simplexmotion-pymodbusRS485', image: '/images/embedded.png', status: 'public' as const },
-      { key: 'stock', link: 'https://github.com/Ktliu-Tyler/Stock-Analysis-Taiwan', image: '/images/data.png', status: 'public' as const },
-      { key: 'portfolio', link: 'https://github.com/Ktliu-Tyler/portfolio', image: null, status: 'public' as const },
+      { key: 'pixy_car', link: 'https://github.com/Ktliu-Tyler/Pixy-Line-tracking-drifting-car', image: '/images/embedded.png', status: 'public' as const },
+      { key: 'space_travel', link: 'https://github.com/Ktliu-Tyler/Space_travel', image: null, status: 'public' as const },
+      { key: 'space_fighter', link: 'https://github.com/Ktliu-Tyler/Space-Fighter', image: '/images/game.png', status: 'public' as const },
+      { key: 'laser', link: 'https://github.com/Ktliu-Tyler/LaserRecognition', image: null, status: 'public' as const },
     ],
   },
 ]

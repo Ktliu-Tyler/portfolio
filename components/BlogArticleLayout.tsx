@@ -18,6 +18,7 @@ interface BlogArticleLayoutProps {
   readTime?: string
   tags?: string[]
   image?: string | null
+  excerpt?: string
   sourceRepos?: Array<{
     name: string
     url: string
@@ -35,6 +36,7 @@ export default function BlogArticleLayout({
   readTime,
   tags,
   image,
+  excerpt,
   sourceRepos,
 }: BlogArticleLayoutProps) {
   const { t } = useTranslation()
@@ -44,7 +46,7 @@ export default function BlogArticleLayout({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="min-h-screen"
+      className="min-h-screen bg-slate-50/40 dark:bg-[#0C1120]"
     >
       {/* ── Back link ──────────────────────────────────────────── */}
       <div className="max-w-3xl mx-auto px-4 pt-24 pb-4">
@@ -64,8 +66,8 @@ export default function BlogArticleLayout({
 
       {/* ── Banner image ───────────────────────────────────────── */}
       {image && (
-        <div className="max-w-4xl mx-auto px-4 mb-8">
-          <div className="rounded-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08] relative h-64 sm:h-80">
+        <div className="max-w-5xl mx-auto px-4 mb-8">
+          <div className="rounded-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08] relative h-60 sm:h-80 lg:h-[24rem] shadow-lg shadow-slate-900/5 dark:shadow-black/20">
             <Image
               src={image}
               alt={title ?? 'Article banner'}
@@ -79,9 +81,15 @@ export default function BlogArticleLayout({
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="max-w-3xl mx-auto px-4 mb-10">
         {title && (
-          <h1 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 dark:text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-slate-950 dark:text-white leading-tight">
             {title}
           </h1>
+        )}
+
+        {excerpt && (
+          <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
+            {excerpt}
+          </p>
         )}
 
         {/* Meta row */}
@@ -127,16 +135,7 @@ export default function BlogArticleLayout({
       {/* ── Article body (prose) ────────────────────────────────── */}
       <div
         className="
-          max-w-3xl mx-auto px-4 pb-20
-          prose prose-slate dark:prose-invert
-          prose-headings:font-heading prose-headings:font-bold
-          prose-a:text-indigo-500 dark:prose-a:text-indigo-400
-          prose-code:font-mono prose-code:text-sm
-          prose-code:bg-slate-100 dark:prose-code:bg-white/[0.06]
-          prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-          prose-pre:bg-slate-900 dark:prose-pre:bg-white/[0.04]
-          prose-pre:border prose-pre:border-black/[0.08] dark:prose-pre:border-white/[0.08]
-          prose-img:rounded-xl
+          max-w-3xl mx-auto px-4 pb-20 space-y-10
         "
         style={{ maxWidth: '720px' }}
       >
