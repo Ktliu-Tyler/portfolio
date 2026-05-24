@@ -72,3 +72,19 @@ Last updated: 2026-05-24
 - Cause: Next.js dev server and HMR can keep connections active or delay navigation readiness.
 - Fix: Used HTTP checks and Playwright `commit` navigation plus heading assertions.
 - Verification: All key routes returned HTTP 200 and rendered headings without runtime error overlays.
+
+## 9. Git Dubious Ownership Warning In Sandboxed Environment
+
+- Location: local repository access from the sandboxed shell.
+- Symptom: `fatal: detected dubious ownership in repository at 'D:/My web/portfolio'`.
+- Cause: The repository is owned by the normal Windows user, while the shell command was executed as a sandbox user.
+- Fix: Used a command-scoped Git safe directory option instead of changing global Git configuration.
+- Verification: `git -c safe.directory='D:/My web/portfolio' status --short --branch` returned the expected branch state.
+
+## 10. Home Page Role Label Review
+
+- Location: `app/page.tsx`
+- Symptom: The home-page typewriter rotation included a role label related to NTU Racing lead work.
+- Cause: The typewriter used every role key from the hero translation group.
+- Fix: Removed the third role from the home-page typewriter list so the cover no longer cycles through that label.
+- Verification: The remaining typewriter list contains software development, embedded systems, and IoT systems roles.

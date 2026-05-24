@@ -23,6 +23,12 @@ http://127.0.0.1:3000
 git status --short --branch
 ```
 
+If the shell reports dubious repository ownership in a sandbox, use:
+
+```bash
+git -c safe.directory='D:/My web/portfolio' status --short --branch
+```
+
 2. Review the relevant files before changing them.
 3. Keep unrelated work intact. Do not reset or revert user changes unless explicitly requested.
 
@@ -98,3 +104,11 @@ git push origin main
 ```
 
 Vercel should then pick up the pushed `main` branch and deploy automatically.
+
+## 8. Maintenance Records
+
+When a recovery or debugging session changes behavior, update:
+
+- `docs/WORK_LOG.md` for completed work.
+- `docs/ERROR_LOG.md` for symptoms, causes, fixes, and verification.
+- `docs/CONVERSATION_RECORD.md` for request timeline and decisions that may matter later.

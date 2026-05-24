@@ -36,6 +36,7 @@ npm run build
 - [Work Log](docs/WORK_LOG.md)
 - [Development Workflow](docs/DEVELOPMENT_WORKFLOW.md)
 - [Error Log](docs/ERROR_LOG.md)
+- [Conversation Record](docs/CONVERSATION_RECORD.md)
 
 ## Deployment
 

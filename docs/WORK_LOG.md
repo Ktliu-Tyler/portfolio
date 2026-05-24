@@ -2,6 +2,18 @@
 
 Last updated: 2026-05-24
 
+## 2026-05-24 Follow-Up Maintenance
+
+- Removed the NTU Racing lead role from the home-page typewriter rotation.
+- Added `docs/CONVERSATION_RECORD.md` to preserve the request timeline, decisions, fixes, and traceability notes from the recovery conversation.
+- Linked the conversation record from the README maintenance document list.
+- Re-ran integrity checks after the content and documentation update:
+  - `npm run lint`
+  - `npm run build`
+  - production HTTP smoke checks for all primary routes
+  - `git diff --check`
+  - sensitive string scan excluding `node_modules` and `.next`
+
 ## Project Recovery
 
 - Continued the portfolio implementation from `implementation_plan.md`.

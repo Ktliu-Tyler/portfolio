@@ -135,7 +135,6 @@ export default function HomePage() {
               texts={[
                 t('hero.roles.r1'),
                 t('hero.roles.r2'),
-                t('hero.roles.r3'),
                 t('hero.roles.r4'),
               ]}
               speed={80}
