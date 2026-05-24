@@ -1,298 +1,516 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Code2, Zap, Lightbulb, Github, Mail, Linkedin, Twitter } from 'lucide-react'
-import dynamic from 'next/dynamic'
+import {
+  Github,
+  Mail,
+  Code2,
+  Cpu,
+  Monitor,
+  Wrench,
+  ChevronDown,
+} from 'lucide-react'
+import { useTranslation } from '@/lib/i18n'
+import TypewriterEffect from '@/components/TypewriterEffect'
+import CountUp from '@/components/CountUp'
+import GlassCard from '@/components/GlassCard'
+import { BentoGrid, BentoItem } from '@/components/BentoGrid'
+import AnimatedSection from '@/components/AnimatedSection'
 
 const ThreeDBackground = dynamic(() => import('@/components/ThreeDBackground'), {
   ssr: false,
 })
 
-const skills = [
-  { icon: Code2, label: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'] },
-  { icon: Zap, label: 'Backend', items: ['Python', 'Node.js', 'C++', 'CAD'] },
-  { icon: Lightbulb, label: 'Tools', items: ['Git', 'Docker', 'Vercel', 'VS Code'] },
+/* ── Framer Motion Variants ──────────────────────────────────────── */
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.2,
+    },
+  },
+}
+
+const fadeUpItem = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+/* ── Skill Data ──────────────────────────────────────────────────── */
+
+interface SkillGroup {
+  labelKey: string
+  icon: React.ReactNode
+  items: string[]
+}
+
+const skillGroups: SkillGroup[] = [
+  {
+    labelKey: 'skills.languages',
+    icon: <Code2 className="w-5 h-5" />,
+    items: ['Python', 'C++', 'C', 'TypeScript', 'JavaScript'],
+  },
+  {
+    labelKey: 'skills.embedded',
+    icon: <Cpu className="w-5 h-5" />,
+    items: ['ESP32', 'STM32', 'Zephyr RTOS', 'CAN Bus', 'Modbus RS485'],
+  },
+  {
+    labelKey: 'skills.frontend',
+    icon: <Monitor className="w-5 h-5" />,
+    items: ['React', 'Next.js', 'Tailwind CSS', 'Three.js'],
+  },
+  {
+    labelKey: 'skills.tools',
+    icon: <Wrench className="w-5 h-5" />,
+    items: ['Git', 'Docker', 'Raspberry Pi', 'CMake', 'VS Code'],
+  },
 ]
 
-const socialLinks = [
-  { icon: Github, href: 'https://github.com/Ktliu-Tyler', label: 'GitHub' },
-  { icon: Mail, href: 'mailto:your.email@example.com', label: 'Email' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
+/* ── Journey Year Data ───────────────────────────────────────────── */
+
+const journeyYears = [
+  { year: '2021', labelKey: 'journey_preview.y2021' },
+  { year: '2022', labelKey: 'journey_preview.y2022' },
+  { year: '2024', labelKey: 'journey_preview.y2024' },
+  { year: '2025', labelKey: 'journey_preview.y2025' },
+  { year: '2026', labelKey: 'journey_preview.y2026' },
 ]
 
-export default function Home() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  }
+/* ================================================================ */
+/*  HomePage                                                         */
+/* ================================================================ */
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  }
+export default function HomePage() {
+  const { t } = useTranslation()
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      {/* 3D Hero Section */}
+    <>
+      {/* ━━━━━━━━━━━━━━━━  HERO  ━━━━━━━━━━━━━━━━ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* 3D Background */}
-        <div className="absolute inset-0 opacity-30">
+        {/* Background */}
+        <div className="absolute inset-0 opacity-20">
           <ThreeDBackground />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-4 py-24">
-          <motion.div
-            className="space-y-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Main Title */}
-            <motion.div variants={itemVariants}>
-              <h1 className="text-6xl md:text-7xl font-bold leading-tight">
-                Hi, I&apos;m <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Tyler</span>
-              </h1>
-            </motion.div>
-
-            {/* Subtitle */}
-            <motion.div variants={itemVariants}>
-              <p className="text-2xl md:text-3xl text-slate-700 dark:text-slate-300 font-semibold">
-                Full-Stack Developer & Problem Solver
-              </p>
-            </motion.div>
-
-            {/* Description */}
-            <motion.div variants={itemVariants}>
-              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-                我是台灣大學機械工程系學生，專注於軟體開發和創新解決方案。
-                熱愛探索新技術，在硬體、軟體和 AI 領域都有實踐經驗。
-              </p>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
-              <Link
-                href="/projects"
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg transition-all transform hover:scale-105 font-semibold"
-              >
-                查看作品集
-              </Link>
-              <Link
-                href="/blog"
-                className="px-8 py-4 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 transition font-semibold"
-              >
-                閱讀文章
-              </Link>
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div variants={itemVariants} className="flex gap-4 pt-4">
-              {socialLinks.map((social, i) => (
-                <a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 transition transform hover:scale-110"
-                  title={social.label}
-                >
-                  <social.icon className="w-6 h-6 text-slate-700 dark:text-slate-300" />
-                </a>
-              ))}
-            </motion.div>
-          </motion.div>
+        {/* Ambient glow blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float delay-300" />
+          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-cyan-500/8 rounded-full blur-3xl animate-float delay-600" />
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Content */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 border-2 border-slate-400 rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-slate-400 rounded-full mt-2" />
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Skills Section */}
-      <section className="max-w-6xl mx-auto px-4 py-24">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold mb-4">技能與專長</h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400">
-            多年的學習和實踐經驗
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid md:grid-cols-3 gap-8"
-          variants={containerVariants}
+          className="relative z-10 max-w-6xl mx-auto px-4 py-24 text-center"
+          variants={staggerContainer}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          animate="visible"
         >
-          {skills.map((skill, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              className="p-8 rounded-2xl bg-white dark:bg-slate-800 hover:shadow-xl transition-all transform hover:scale-105 border border-slate-200 dark:border-slate-700"
-            >
-              <skill.icon className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-bold mb-4">{skill.label}</h3>
-              <ul className="space-y-2">
-                {skill.items.map((item, j) => (
-                  <li key={j} className="text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-600 rounded-full" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+          {/* Greeting + Name */}
+          <motion.h1
+            variants={fadeUpItem}
+            className="text-5xl sm:text-6xl md:text-8xl font-heading font-bold tracking-tight leading-tight"
+          >
+            <span className="text-slate-200 dark:text-slate-200 light:text-slate-800">
+              {t('hero.greeting')}{' '}
+            </span>
+            <span className="gradient-text animate-gradient-shift">Tyler</span>
+          </motion.h1>
 
-      {/* Stats Section */}
-      <section className="max-w-6xl mx-auto px-4 py-24">
-        <motion.div
-          className="grid md:grid-cols-4 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {[
-            { number: '3+', label: '個主要專案', color: 'from-blue-500 to-blue-600' },
-            { number: '500+', label: '小時編碼', color: 'from-purple-500 to-purple-600' },
-            { number: '10+', label: '個技術棧', color: 'from-pink-500 to-pink-600' },
-            { number: '∞', label: '學習熱情', color: 'from-orange-500 to-orange-600' },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              className={`p-6 rounded-xl bg-gradient-to-br ${stat.color} text-white text-center hover:shadow-lg transition`}
-            >
-              <div className="text-4xl font-bold">{stat.number}</div>
-              <div className="mt-2 text-sm opacity-90">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+          {/* Typewriter */}
+          <motion.div
+            variants={fadeUpItem}
+            className="mt-6 text-xl sm:text-2xl md:text-3xl font-heading font-medium"
+          >
+            <TypewriterEffect
+              texts={[
+                t('hero.roles.r1'),
+                t('hero.roles.r2'),
+                t('hero.roles.r3'),
+                t('hero.roles.r4'),
+              ]}
+              speed={80}
+              deleteSpeed={40}
+              pauseTime={2500}
+            />
+          </motion.div>
 
-      {/* Featured Projects Preview */}
-      <section className="max-w-6xl mx-auto px-4 py-24">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold mb-4">精選專案</h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400">
-            最近完成的一些有趣項目
-          </p>
-        </motion.div>
+          {/* Description */}
+          <motion.p
+            variants={fadeUpItem}
+            className="mt-8 max-w-2xl mx-auto text-base sm:text-lg text-slate-400 dark:text-slate-400 leading-relaxed"
+          >
+            {t('hero.description')}
+          </motion.p>
 
-        <motion.div
-          className="grid md:grid-cols-2 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {[
-            {
-              title: 'CANdecoder',
-              description: 'CAN 協議解碼工具，支援 DBC 文件轉換',
-              tags: ['Python', 'CAN'],
-              image: '🔧',
-            },
-            {
-              title: 'ESPBOT',
-              description: '嵌入式機器人項目，探索 IoT 開發',
-              tags: ['ESP32', '機器人'],
-              image: '🤖',
-            },
-          ].map((project, i) => (
+          {/* CTA Buttons */}
+          <motion.div
+            variants={fadeUpItem}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
             <Link
-              key={i}
               href="/projects"
-              className="p-8 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-blue-600 transition-all group cursor-pointer hover:shadow-lg"
+              className="
+                group relative inline-flex items-center gap-2 px-8 py-3.5
+                rounded-xl font-medium text-white
+                bg-gradient-to-r from-indigo-500 to-purple-500
+                shadow-lg shadow-indigo-500/25
+                hover:shadow-indigo-500/40 hover:scale-[1.02]
+                transition-all duration-300
+              "
             >
-              <motion.div
-                variants={itemVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">{project.image}</div>
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-blue-600 transition">{project.title}</h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
-                <div className="flex gap-2">
-                  {project.tags.map((tag, j) => (
-                    <span key={j} className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-sm">
-                      {tag}
+              <span>{t('hero.cta_projects')}</span>
+              <span className="inline-block transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
+
+            <Link
+              href="/blog"
+              className="
+                inline-flex items-center gap-2 px-8 py-3.5
+                rounded-xl font-medium
+                text-slate-300 dark:text-slate-300
+                border border-white/[0.12] dark:border-white/[0.12]
+                bg-white/[0.04] dark:bg-white/[0.04]
+                backdrop-blur-sm
+                hover:bg-white/[0.08] hover:border-white/[0.2]
+                hover:scale-[1.02]
+                transition-all duration-300
+              "
+            >
+              <span>{t('hero.cta_blog')}</span>
+            </Link>
+          </motion.div>
+
+          {/* Social Icons */}
+          <motion.div
+            variants={fadeUpItem}
+            className="mt-8 flex items-center justify-center gap-4"
+          >
+            <motion.a
+              href="https://github.com/Ktliu-Tyler"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              whileHover={{ y: -3, scale: 1.15 }}
+              whileTap={{ scale: 0.9 }}
+              className="
+                w-11 h-11 flex items-center justify-center rounded-full
+                border border-white/[0.1] bg-white/[0.05]
+                text-slate-400 hover:text-indigo-400
+                hover:border-indigo-500/40 hover:bg-indigo-500/10
+                transition-colors duration-200
+              "
+            >
+              <Github className="w-5 h-5" />
+            </motion.a>
+            <motion.a
+              href="mailto:ktliu1995@gmail.com"
+              aria-label="Email"
+              whileHover={{ y: -3, scale: 1.15 }}
+              whileTap={{ scale: 0.9 }}
+              className="
+                w-11 h-11 flex items-center justify-center rounded-full
+                border border-white/[0.1] bg-white/[0.05]
+                text-slate-400 hover:text-purple-400
+                hover:border-purple-500/40 hover:bg-purple-500/10
+                transition-colors duration-200
+              "
+            >
+              <Mail className="w-5 h-5" />
+            </motion.a>
+          </motion.div>
+
+          {/* Scroll Indicator */}
+          <motion.div
+            variants={fadeUpItem}
+            className="mt-16 flex flex-col items-center gap-2"
+          >
+            <span className="text-xs text-slate-500 tracking-wider uppercase">
+              {t('hero.scroll_hint')}
+            </span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <ChevronDown className="w-5 h-5 text-slate-500" />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ━━━━━━━━━━━━━━━━  ABOUT (BENTO)  ━━━━━━━━━━━━━━━━ */}
+      <AnimatedSection className="max-w-6xl mx-auto px-4 py-24 sm:py-32">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold">
+            <span className="gradient-text">{t('about.title')}</span>
+          </h2>
+          <p className="mt-4 text-slate-400 text-lg max-w-xl mx-auto">
+            {t('about.subtitle')}
+          </p>
+        </div>
+
+        <BentoGrid cols={4}>
+          {/* Intro — spans 2 cols × 2 rows */}
+          <BentoItem colSpan={2} rowSpan={2} className="flex items-center">
+            <div>
+              <p className="text-slate-300 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                {t('about.intro')}
+              </p>
+            </div>
+          </BentoItem>
+
+          {/* School */}
+          <BentoItem className="flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-3xl" role="img" aria-label="school">
+              🎓
+            </span>
+            <span className="font-heading font-semibold text-sm text-slate-200">
+              {t('about.school')}
+            </span>
+            <span className="text-xs text-slate-400">{t('about.school_dept')}</span>
+          </BentoItem>
+
+          {/* Racing Team */}
+          <BentoItem className="flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-3xl" role="img" aria-label="racing">
+              🏎️
+            </span>
+            <span className="font-heading font-semibold text-sm text-slate-200">
+              {t('about.team')}
+            </span>
+            <span className="text-xs text-slate-400">{t('about.team_role')}</span>
+          </BentoItem>
+
+          {/* Location */}
+          <BentoItem className="flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-3xl" role="img" aria-label="location">
+              📍
+            </span>
+            <span className="font-heading font-semibold text-sm text-slate-200">
+              {t('about.location')}
+            </span>
+          </BentoItem>
+
+          {/* Experience */}
+          <BentoItem className="flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-3xl" role="img" aria-label="calendar">
+              📅
+            </span>
+            <span className="font-heading font-semibold text-sm text-slate-200">
+              {t('about.experience')}
+            </span>
+            <span className="text-xs text-slate-400">{t('about.since')}</span>
+          </BentoItem>
+        </BentoGrid>
+      </AnimatedSection>
+
+      {/* ━━━━━━━━━━━━━━━━  SKILLS  ━━━━━━━━━━━━━━━━ */}
+      <AnimatedSection className="max-w-6xl mx-auto px-4 py-24 sm:py-32">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold">
+            <span className="gradient-text">{t('skills.title')}</span>
+          </h2>
+          <p className="mt-4 text-slate-400 text-lg max-w-xl mx-auto">
+            {t('skills.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {skillGroups.map((group, i) => (
+            <motion.div
+              key={group.labelKey}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <GlassCard className="p-6 h-full">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-indigo-400">
+                    {group.icon}
+                  </div>
+                  <h3 className="font-heading font-semibold text-slate-200">
+                    {t(group.labelKey)}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((skill) => (
+                    <span
+                      key={skill}
+                      className="
+                        px-3 py-1.5 text-xs font-medium rounded-full
+                        bg-white/[0.06] dark:bg-white/[0.06]
+                        border border-white/[0.08] dark:border-white/[0.08]
+                        text-slate-300 dark:text-slate-300
+                        hover:bg-indigo-500/15 hover:border-indigo-500/30 hover:text-indigo-300
+                        transition-all duration-200
+                      "
+                    >
+                      {skill}
                     </span>
                   ))}
                 </div>
-              </motion.div>
-            </Link>
+              </GlassCard>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
+      </AnimatedSection>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-12 text-center"
-        >
+      {/* ━━━━━━━━━━━━━━━━  JOURNEY PREVIEW  ━━━━━━━━━━━━━━━━ */}
+      <AnimatedSection className="max-w-4xl mx-auto px-4 py-24 sm:py-32">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold">
+            <span className="gradient-text">{t('journey_preview.title')}</span>
+          </h2>
+          <p className="mt-4 text-slate-400 text-lg">
+            {t('journey_preview.subtitle')}
+          </p>
+        </div>
+
+        {/* Horizontal timeline */}
+        <div className="relative flex items-center justify-between px-4 sm:px-8">
+          {/* Connecting gradient line */}
+          <div className="absolute left-8 right-8 sm:left-12 sm:right-12 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 rounded-full opacity-50" />
+
+          {journeyYears.map((item, i) => (
+            <motion.div
+              key={item.year}
+              className="relative flex flex-col items-center z-10"
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.12,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {/* Dot */}
+              <motion.div
+                className="
+                  w-4 h-4 rounded-full
+                  bg-gradient-to-br from-indigo-500 to-purple-500
+                  shadow-lg shadow-indigo-500/40
+                  ring-4 ring-navy-950
+                "
+                whileHover={{ scale: 1.4 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              />
+
+              {/* Year label */}
+              <span className="mt-3 text-xs sm:text-sm font-heading font-bold text-indigo-400">
+                {item.year}
+              </span>
+
+              {/* Phase label */}
+              <span className="mt-1 text-[10px] sm:text-xs text-slate-500 whitespace-nowrap">
+                {t(item.labelKey)}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
           <Link
             href="/projects"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg transition font-semibold"
+            className="
+              inline-flex items-center gap-2
+              text-indigo-400 hover:text-indigo-300
+              font-medium text-sm
+              transition-colors duration-200
+              group
+            "
           >
-            查看所有專案 →
+            <span>{t('journey_preview.cta')}</span>
+            <span className="inline-block transition-transform group-hover:translate-x-1">
+              →
+            </span>
           </Link>
-        </motion.div>
-      </section>
+        </div>
+      </AnimatedSection>
 
-      {/* CTA Section */}
-      <section className="max-w-6xl mx-auto px-4 py-24 text-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="space-y-6"
-        >
-          <h2 className="text-4xl font-bold">準備好合作了嗎？</h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            無論你有想法還是專案，歡迎聯絡我一起創造有趣的東西。
+      {/* ━━━━━━━━━━━━━━━━  STATS  ━━━━━━━━━━━━━━━━ */}
+      <AnimatedSection className="max-w-6xl mx-auto px-4 py-24 sm:py-32">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Projects */}
+          <GlassCard className="p-8 text-center" glow>
+            <div className="text-4xl sm:text-5xl font-heading font-bold gradient-text">
+              <CountUp end={18} />
+            </div>
+            <p className="mt-3 text-sm text-slate-400">{t('stats.projects')}</p>
+          </GlassCard>
+
+          {/* Hours */}
+          <GlassCard className="p-8 text-center" glow>
+            <div className="text-4xl sm:text-5xl font-heading font-bold gradient-text">
+              <CountUp end={500} suffix="+" />
+            </div>
+            <p className="mt-3 text-sm text-slate-400">{t('stats.hours')}</p>
+          </GlassCard>
+
+          {/* Tech stacks */}
+          <GlassCard className="p-8 text-center" glow>
+            <div className="text-4xl sm:text-5xl font-heading font-bold gradient-text">
+              <CountUp end={10} suffix="+" />
+            </div>
+            <p className="mt-3 text-sm text-slate-400">{t('stats.techs')}</p>
+          </GlassCard>
+
+          {/* Focus areas */}
+          <GlassCard className="p-8 text-center" glow>
+            <div className="text-4xl sm:text-5xl font-heading font-bold gradient-text">
+              <CountUp end={4} />
+            </div>
+            <p className="mt-3 text-sm text-slate-400">{t('stats.passion')}</p>
+          </GlassCard>
+        </div>
+      </AnimatedSection>
+
+      {/* ━━━━━━━━━━━━━━━━  CTA  ━━━━━━━━━━━━━━━━ */}
+      <AnimatedSection className="max-w-4xl mx-auto px-4 py-24 sm:py-32">
+        <GlassCard className="p-10 sm:p-16 text-center" glow hover={false}>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold">
+            <span className="gradient-text">{t('cta.title')}</span>
+          </h2>
+          <p className="mt-4 text-slate-400 max-w-lg mx-auto leading-relaxed">
+            {t('cta.description')}
           </p>
-          <a
-            href="mailto:your.email@example.com"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition font-semibold"
-          >
-            發送郵件給我
-          </a>
-        </motion.div>
-      </section>
-    </main>
+          <div className="mt-8">
+            <motion.a
+              href="mailto:ktliu1995@gmail.com"
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="
+                inline-flex items-center gap-2.5 px-8 py-3.5
+                rounded-xl font-medium text-white
+                bg-gradient-to-r from-indigo-500 to-purple-500
+                shadow-lg shadow-indigo-500/25
+                hover:shadow-indigo-500/40
+                transition-shadow duration-300
+              "
+            >
+              <Mail className="w-4.5 h-4.5" />
+              <span>{t('cta.button')}</span>
+            </motion.a>
+          </div>
+        </GlassCard>
+      </AnimatedSection>
+    </>
   )
 }

@@ -1,11 +1,47 @@
-import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import { LanguageProvider } from '@/lib/i18n'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import './globals.css'
 
+/* ── Font Setup ──────────────────────────────────────────────────── */
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
+
+/* ── Metadata ────────────────────────────────────────────────────── */
+
 export const metadata: Metadata = {
-  title: "Tyler's Portfolio",
-  description: '個人作品集 - 展示專案、文章和紀錄',
+  title: 'Tyler Liu | Software & Embedded Systems Portfolio',
+  description:
+    'Portfolio of Tyler Liu, a National Taiwan University mechanical engineering student focused on software engineering, embedded systems, vehicle telemetry, and IoT applications.',
+  icons: { icon: '/favicon.ico' },
+  openGraph: {
+    title: 'Tyler Liu | Software & Embedded Systems Portfolio',
+    description:
+      'Selected software, embedded systems, vehicle telemetry, and IoT projects by Tyler Liu.',
+    type: 'website',
+    locale: 'en_US',
+  },
 }
+
+/* ── Root Layout ─────────────────────────────────────────────────── */
 
 export default function RootLayout({
   children,
@@ -13,30 +49,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-TW">
-      <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50">
-        <nav className="border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold">
-              Tyler
-            </Link>
-            <div className="flex gap-6">
-              <Link href="/projects" className="hover:text-blue-600 transition">
-                作品集
-              </Link>
-              <Link href="/blog" className="hover:text-blue-600 transition">
-                部落格
-              </Link>
-              <Link href="/notes" className="hover:text-blue-600 transition">
-                紀錄
-              </Link>
-            </div>
-          </div>
-        </nav>
-        {children}
-        <footer className="border-t border-slate-200 dark:border-slate-800 mt-20 py-8 text-center text-slate-600 dark:text-slate-400">
-          <p>© 2026 Tyler. All rights reserved.</p>
-        </footer>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} dark`}
+      data-theme="dark"
+      suppressHydrationWarning
+    >
+      <body className="antialiased bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen flex flex-col">
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   )
