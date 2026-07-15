@@ -3,6 +3,7 @@
 Personal technical portfolio for software, embedded systems, vehicle telemetry, IoT, and data tooling work.
 
 The site is built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Three.js, and lucide-react. It is intended to deploy from GitHub to Vercel.
+https://portfolio-5wie.vercel.app/
 
 ## Local Development
 
