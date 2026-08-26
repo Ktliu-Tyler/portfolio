@@ -12,6 +12,9 @@ export interface ArticleSummary {
   readTime: string
   tags: string[]
   image: string
+  imagePosition?: string
+  category?: string
+  sourceType?: string
   sourceRepos?: Array<{
     name: string
     url: string
@@ -31,7 +34,8 @@ export const technicalArticles: TechnicalArticle[] = [
     date: '2026-05-24',
     readTime: '9',
     tags: ['Telemetry', 'CAN Bus', 'Raspberry Pi', 'NTU Racing'],
-    image: '/images/racing.png',
+    image: '/images/experience/ntu-racing-sunset-car.jpg',
+    imagePosition: '64% 82%',
     sourceRepos: [
       { name: 'CANdecoder', url: 'https://github.com/Ktliu-Tyler/CANdecoder' },
       { name: 'rpi_can_monitor', url: 'https://github.com/Ktliu-Tyler/rpi_can_monitor' },
@@ -58,8 +62,8 @@ export const technicalArticles: TechnicalArticle[] = [
       {
         heading: 'Real-Time Versus Post-Run Analysis',
         body: [
-          'Vehicle testing has two distinct modes. During a run, the priority is fast awareness: engineers need to see connection state, abnormal signals, and key vehicle values without digging through logs. After a run, the priority becomes repeatability: data should be decoded into files that can be compared, archived, and analyzed later.',
-          'That distinction explains why both dashboards and CSV exports matter. A dashboard helps during operation; decoded data files help when the team needs to compare runs, diagnose a failure, or preserve evidence for future design decisions.',
+          'Vehicle testing has two distinct modes. During a run, the priority is fast awareness: engineers need to see connection state, abnormal signals, and key vehicle values without digging through logs. After a run, the priority becomes repeatability: data should be decoded into files that can be compared and analyzed later.',
+          'That distinction explains why both dashboards and CSV exports matter. A dashboard helps during operation; decoded data files help when the team needs to compare runs, diagnose a failure, or preserve useful context for future design decisions.',
         ],
       },
       {
@@ -337,7 +341,8 @@ export const technicalArticles: TechnicalArticle[] = [
     date: '2026-05-20',
     readTime: '8',
     tags: ['NTU Racing', 'Embedded', 'CAN Bus'],
-    image: '/images/racing.png',
+    image: '/images/experience/ntu-racing-driver-car.jpg',
+    imagePosition: '50% 62%',
     sourceRepos: [
       { name: 'CANdecoder', url: 'https://github.com/Ktliu-Tyler/CANdecoder' },
       { name: 'rpi_can_monitor', url: 'https://github.com/Ktliu-Tyler/rpi_can_monitor' },

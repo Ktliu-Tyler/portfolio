@@ -15,17 +15,9 @@ export default function LanguageSwitcher() {
     <button
       onClick={toggle}
       aria-label="Toggle language"
-      className="
-        relative flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-        border border-black/[0.08] dark:border-white/[0.08]
-        bg-white/60 dark:bg-white/[0.05]
-        backdrop-blur-md
-        text-slate-600 dark:text-slate-300
-        hover:bg-white/80 dark:hover:bg-white/[0.1]
-        transition-colors duration-200
-      "
+      className="relative flex items-center gap-1.5 rounded-md border border-slate-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-slate-600 backdrop-blur-md transition-colors duration-200 hover:bg-slate-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.08]"
     >
-      <Globe className="w-3.5 h-3.5" />
+      <Globe className="h-3.5 w-3.5" />
       <motion.span
         key={locale}
         initial={{ y: -6, opacity: 0 }}
@@ -33,7 +25,7 @@ export default function LanguageSwitcher() {
         exit={{ y: 6, opacity: 0 }}
         transition={{ duration: 0.2 }}
       >
-        {locale === 'zh' ? 'EN' : '中'}
+        {locale === 'zh' ? 'EN' : 'ZH'}
       </motion.span>
     </button>
   )

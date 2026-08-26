@@ -7,10 +7,6 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Clock, Calendar } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
-
 interface BlogArticleLayoutProps {
   children: ReactNode
   title?: string
@@ -18,16 +14,13 @@ interface BlogArticleLayoutProps {
   readTime?: string
   tags?: string[]
   image?: string | null
+  imagePosition?: string
   excerpt?: string
   sourceRepos?: Array<{
     name: string
     url: string
   }>
 }
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
 
 export default function BlogArticleLayout({
   children,
@@ -36,6 +29,7 @@ export default function BlogArticleLayout({
   readTime,
   tags,
   image,
+  imagePosition,
   excerpt,
   sourceRepos,
 }: BlogArticleLayoutProps) {
@@ -43,107 +37,87 @@ export default function BlogArticleLayout({
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="min-h-screen bg-slate-50/40 dark:bg-[#0C1120]"
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="min-h-screen"
     >
-      {/* ── Back link ──────────────────────────────────────────── */}
-      <div className="max-w-3xl mx-auto px-4 pt-24 pb-4">
+      <div className="mx-auto max-w-3xl px-4 pb-4 pt-24 sm:px-6">
         <Link
           href="/blog"
-          className="
-            inline-flex items-center gap-1.5 text-sm font-medium
-            text-slate-500 dark:text-slate-400
-            hover:text-indigo-500 dark:hover:text-indigo-400
-            transition-colors
-          "
+          className="marker-link inline-flex items-center gap-2 text-sm font-medium text-slate-500 underline underline-offset-4 transition-colors hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           {t('blog.back')}
         </Link>
       </div>
 
-      {/* ── Banner image ───────────────────────────────────────── */}
-      {image && (
-        <div className="max-w-5xl mx-auto px-4 mb-8">
-          <div className="rounded-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08] relative h-60 sm:h-80 lg:h-[24rem] shadow-lg shadow-slate-900/5 dark:shadow-black/20">
-            <Image
-              src={image}
-              alt={title ?? 'Article banner'}
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
-      )}
-
-      {/* ── Header ─────────────────────────────────────────────── */}
-      <header className="max-w-3xl mx-auto px-4 mb-10">
+      <header className="mx-auto max-w-3xl px-4 pb-8 pt-4 sm:px-6">
         {title && (
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-slate-950 dark:text-white leading-tight">
+          <h1 className="text-4xl font-medium leading-tight tracking-tight text-slate-950 dark:text-white sm:text-5xl">
             {title}
           </h1>
         )}
 
+        <div className="editorial-rule mt-6" />
+
         {excerpt && (
-          <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
+          <p className="mt-6 text-lg leading-8 text-slate-600 dark:text-slate-300">
             {excerpt}
           </p>
         )}
 
-        {/* Meta row */}
         {(date || readTime) && (
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
             {date && (
               <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" />
+                <Calendar className="h-4 w-4" />
                 {date}
               </span>
             )}
             {readTime && (
               <span className="inline-flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
+                <Clock className="h-4 w-4" />
                 {readTime} {t('blog.min_read')}
               </span>
             )}
           </div>
         )}
 
-        {/* Tags */}
         {tags && tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="
-                  text-xs font-medium px-2.5 py-1 rounded-full
-                  bg-indigo-500/10 text-indigo-500 dark:text-indigo-400
-                  border border-indigo-500/15
-                "
+                className="marker-chip rounded-full border border-slate-200 px-2.5 py-1 text-xs text-slate-500 dark:border-white/[0.08] dark:text-slate-400"
               >
                 {tag}
               </span>
             ))}
           </div>
         )}
-
-        {/* Divider */}
-        <div className="mt-8 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-white/10 to-transparent" />
       </header>
 
-      {/* ── Article body (prose) ────────────────────────────────── */}
-      <div
-        className="
-          max-w-3xl mx-auto px-4 pb-20 space-y-10
-        "
-        style={{ maxWidth: '720px' }}
-      >
+      {image && (
+        <div className="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
+          <div className="marker-card relative h-60 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-white/[0.08] dark:bg-white/[0.03] sm:h-80 lg:h-[24rem]">
+            <Image
+              src={image}
+              alt={title ?? 'Article banner'}
+              fill
+              className="object-cover"
+              style={{ objectPosition: imagePosition ?? 'center' }}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="mx-auto max-w-3xl space-y-10 px-4 pb-20 sm:px-6">
         {children}
 
         {sourceRepos && sourceRepos.length > 0 && (
-          <section className="not-prose mt-12 rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white/70 dark:bg-white/[0.03] p-5">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          <section className="marker-section mt-12 border-t border-slate-200 pt-8 dark:border-white/[0.08]">
+            <h2 className="editorial-kicker text-sm font-medium uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
               Repositories Referenced
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
@@ -153,7 +127,7 @@ export default function BlogArticleLayout({
                   href={repo.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                  className="marker-chip marker-button-secondary inline-flex items-center rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
                 >
                   {repo.name}
                 </Link>

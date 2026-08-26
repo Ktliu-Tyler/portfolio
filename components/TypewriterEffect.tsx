@@ -64,16 +64,11 @@ export default function TypewriterEffect({
 
   return (
     <span className={`inline-flex items-baseline ${className}`}>
-      <span
-        className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400
-          bg-clip-text text-transparent"
-      >
+      <span className="text-slate-700 dark:text-slate-200">
         {displayText}
       </span>
       <motion.span
-        className="inline-block w-[3px] h-[1em] ml-0.5 rounded-full
-          bg-gradient-to-b from-indigo-400 to-purple-500
-          self-stretch relative top-[0.1em]"
+        className="relative top-[0.1em] ml-1 inline-block h-[1em] w-px self-stretch bg-slate-500 dark:bg-slate-300"
         animate={{ opacity: [1, 0, 1] }}
         transition={{
           duration: 0.8,

@@ -9,10 +9,6 @@ import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 import { useTranslation } from '@/lib/i18n'
 
-/* ------------------------------------------------------------------ */
-/*  Nav link data                                                      */
-/* ------------------------------------------------------------------ */
-
 interface NavLink {
   href: string
   labelKey: string
@@ -21,12 +17,9 @@ interface NavLink {
 const links: NavLink[] = [
   { href: '/', labelKey: 'nav.home' },
   { href: '/projects', labelKey: 'nav.projects' },
+  { href: '/experience', labelKey: 'nav.experience' },
   { href: '/blog', labelKey: 'nav.blog' },
 ]
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -37,7 +30,6 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [hasScrolled, setHasScrolled] = useState(false)
 
-  /* Hide on scroll down, show on scroll up ───────────────────── */
   const handleScroll = useCallback(() => {
     const currentY = window.scrollY
 
@@ -46,10 +38,10 @@ export default function Navbar() {
     if (currentY < 10) {
       setVisible(true)
     } else if (currentY > lastScrollY && currentY > 80) {
-      setVisible(false) // scrolling down
+      setVisible(false)
       setMobileOpen(false)
     } else {
-      setVisible(true) // scrolling up
+      setVisible(true)
     }
 
     setLastScrollY(currentY)
@@ -60,7 +52,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
-  /* Determine active link ────────────────────────────────────── */
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)
@@ -72,25 +63,22 @@ export default function Navbar() {
       animate={{ y: visible ? 0 : -100 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className={`
-        fixed top-0 inset-x-0 z-50
-        transition-colors duration-300
+        fixed inset-x-0 top-0 z-50 transition-colors duration-300
         ${
-          hasScrolled
-            ? 'bg-white/70 dark:bg-[#0C1120]/70 backdrop-blur-xl border-b border-black/[0.06] dark:border-white/[0.08] shadow-sm dark:shadow-none'
+          hasScrolled || mobileOpen
+            ? 'border-b border-slate-200 bg-white/86 backdrop-blur-md dark:border-white/[0.08] dark:bg-[#0f1724]/88'
             : 'bg-transparent'
         }
       `}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* ── Logo ───────────────────────────────────────────── */}
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex-shrink-0">
-          <span className="text-xl font-bold font-heading bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-            Tyler.
+          <span className="text-sm font-medium uppercase tracking-[0.2em] text-slate-950 dark:text-white">
+            Tyler Liu
           </span>
         </Link>
 
-        {/* ── Desktop nav links ──────────────────────────────── */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden items-center gap-1 md:flex">
           {links.map((link) => {
             const active = isActive(link.href)
             return (
@@ -98,12 +86,11 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`
-                  relative px-4 py-2 text-sm font-medium rounded-lg
-                  transition-colors duration-200
+                  relative px-3 py-2 text-sm font-medium transition-colors duration-200
                   ${
                     active
-                      ? 'text-indigo-600 dark:text-indigo-400'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                      ? 'text-slate-950 dark:text-white'
+                      : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'
                   }
                 `}
               >
@@ -111,7 +98,7 @@ export default function Navbar() {
                 {active && (
                   <motion.div
                     layoutId="navbar-active-indicator"
-                    className="absolute inset-x-2 -bottom-[1px] h-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                    className="absolute inset-x-3 -bottom-px h-px bg-[var(--marker-accent)]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -120,23 +107,16 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* ── Right side controls ────────────────────────────── */}
         <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex">
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label="Toggle mobile menu"
-            className="
-              md:hidden w-9 h-9 flex items-center justify-center rounded-lg
-              text-slate-600 dark:text-slate-300
-              hover:bg-black/5 dark:hover:bg-white/[0.06]
-              transition-colors
-            "
+            className="flex h-9 w-9 items-center justify-center rounded-md text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06] md:hidden"
           >
             <AnimatePresence mode="wait">
               {mobileOpen ? (
@@ -147,7 +127,7 @@ export default function Navbar() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <X className="w-5 h-5" />
+                  <X className="h-5 w-5" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -157,7 +137,7 @@ export default function Navbar() {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <Menu className="w-5 h-5" />
+                  <Menu className="h-5 w-5" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -165,7 +145,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ── Mobile menu panel ────────────────────────────────── */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -173,14 +152,9 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="
-              md:hidden overflow-hidden
-              bg-white/80 dark:bg-[#0C1120]/90
-              backdrop-blur-xl
-              border-b border-black/[0.06] dark:border-white/[0.08]
-            "
+            className="overflow-hidden border-b border-slate-200 bg-white/94 backdrop-blur-md dark:border-white/[0.08] dark:bg-[#0f1724]/96 md:hidden"
           >
-            <div className="px-4 pt-2 pb-4 flex flex-col gap-1">
+            <div className="flex flex-col gap-1 px-4 pb-4 pt-2">
               {links.map((link) => {
                 const active = isActive(link.href)
                 return (
@@ -189,12 +163,11 @@ export default function Navbar() {
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className={`
-                      px-4 py-3 rounded-lg text-sm font-medium
-                      transition-colors duration-200
+                      rounded-md px-4 py-3 text-sm font-medium transition-colors duration-200
                       ${
                         active
-                          ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/[0.06]'
+                          ? 'marker-filter-active'
+                          : 'marker-filter-idle text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06]'
                       }
                     `}
                   >
@@ -202,7 +175,7 @@ export default function Navbar() {
                   </Link>
                 )
               })}
-              <div className="flex items-center gap-2 px-4 pt-3 border-t border-black/[0.06] dark:border-white/[0.08] mt-2">
+              <div className="mt-2 flex items-center gap-2 border-t border-slate-200 px-4 pt-3 dark:border-white/[0.08]">
                 <LanguageSwitcher />
                 <ThemeToggle />
               </div>

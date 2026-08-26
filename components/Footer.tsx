@@ -1,13 +1,8 @@
 'use client'
 
 import { useCallback } from 'react'
-import { motion } from 'framer-motion'
 import { Github, Mail, ArrowUp } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
-
-/* ------------------------------------------------------------------ */
-/*  Social links                                                       */
-/* ------------------------------------------------------------------ */
 
 const socials = [
   {
@@ -22,10 +17,6 @@ const socials = [
   },
 ]
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
 export default function Footer() {
   const { t } = useTranslation()
 
@@ -34,76 +25,40 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="relative mt-32">
-      {/* ── Top border gradient ────────────────────────────────── */}
-      <div className="h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+    <footer className="marker-section mt-24 border-t border-slate-200 dark:border-white/[0.08]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-sm font-medium text-slate-950 dark:text-white">Tyler Liu</p>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            {t('footer.built_with')}
+          </p>
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+            Copyright 2026 Tyler. {t('footer.rights')}.
+          </p>
+        </div>
 
-      {/* ── Glass card section ─────────────────────────────────── */}
-      <div
-        className="
-          bg-white/50 dark:bg-white/[0.02]
-          backdrop-blur-xl
-          border-t border-black/[0.04] dark:border-white/[0.04]
-        "
-      >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <div className="flex flex-col items-center gap-6">
-            {/* Social icons */}
-            <div className="flex items-center gap-4">
-              {socials.map(({ href, label, Icon }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('mailto') ? undefined : '_blank'}
-                  rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                  aria-label={label}
-                  whileHover={{ y: -3, scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="
-                    w-10 h-10 flex items-center justify-center rounded-full
-                    border border-black/[0.08] dark:border-white/[0.08]
-                    bg-white/60 dark:bg-white/[0.05]
-                    text-slate-600 dark:text-slate-300
-                    hover:text-indigo-500 dark:hover:text-indigo-400
-                    hover:border-indigo-500/30
-                    transition-colors duration-200
-                  "
-                >
-                  <Icon className="w-4.5 h-4.5" />
-                </motion.a>
-              ))}
-            </div>
-
-            {/* Built with */}
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              {t('footer.built_with')}
-            </p>
-
-            {/* Copyright */}
-            <p className="text-xs text-slate-400 dark:text-slate-500">
-              © 2026 Tyler. {t('footer.rights')}.
-            </p>
-          </div>
+        <div className="flex items-center gap-2">
+          {socials.map(({ href, label, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target={href.startsWith('mailto') ? undefined : '_blank'}
+              rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+              aria-label={label}
+              className="marker-icon-button inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
+            >
+              <Icon className="h-4 w-4" />
+            </a>
+          ))}
+          <button
+            onClick={scrollToTop}
+            aria-label="Scroll to top"
+            className="marker-icon-button inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
         </div>
       </div>
-
-      {/* ── Scroll-to-top button ───────────────────────────────── */}
-      <motion.button
-        onClick={scrollToTop}
-        whileHover={{ y: -3, scale: 1.05 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label="Scroll to top"
-        className="
-          absolute -top-5 right-6 sm:right-10
-          w-10 h-10 flex items-center justify-center rounded-full
-          bg-gradient-to-br from-indigo-500 to-purple-500
-          text-white shadow-lg shadow-indigo-500/25
-          hover:shadow-indigo-500/40
-          transition-shadow duration-300
-        "
-      >
-        <ArrowUp className="w-4 h-4" />
-      </motion.button>
     </footer>
   )
 }

@@ -15,7 +15,6 @@ export default function ThemeToggle() {
     root.dataset.theme = nextDark ? 'dark' : 'light'
   }
 
-  /* Sync with system / stored preference on mount */
   useEffect(() => {
     setMounted(true)
     const stored = localStorage.getItem('theme')
@@ -32,29 +31,15 @@ export default function ThemeToggle() {
     localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
+  const buttonClass =
+    'relative flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white/70 text-slate-600 backdrop-blur-md transition-colors duration-200 hover:bg-slate-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.08]'
+
   if (!mounted) {
-    return (
-      <button
-        aria-label="Toggle theme"
-        className="w-9 h-9 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.05] backdrop-blur-md"
-      />
-    )
+    return <button aria-label="Toggle theme" className={buttonClass} />
   }
 
   return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle theme"
-      className="
-        relative w-9 h-9 flex items-center justify-center rounded-full
-        border border-black/[0.08] dark:border-white/[0.08]
-        bg-white/60 dark:bg-white/[0.05]
-        backdrop-blur-md
-        text-slate-600 dark:text-slate-300
-        hover:bg-white/80 dark:hover:bg-white/[0.1]
-        transition-colors duration-200
-      "
-    >
+    <button onClick={toggle} aria-label="Toggle theme" className={buttonClass}>
       <motion.div
         key={dark ? 'dark' : 'light'}
         initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
@@ -62,7 +47,7 @@ export default function ThemeToggle() {
         exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
         transition={{ duration: 0.25 }}
       >
-        {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       </motion.div>
     </button>
   )

@@ -26,7 +26,7 @@ export function BentoGrid({ children, className = '', cols = 4 }: BentoGridProps
     <div
       className={`
         grid grid-cols-1 md:grid-cols-2 ${colsClass[cols] ?? 'lg:grid-cols-4'}
-        gap-4
+        gap-3
         ${className}
       `}
     >
@@ -70,11 +70,10 @@ export function BentoItem({
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={`
         ${spanCol[colSpan]} ${spanRow[rowSpan]}
-        rounded-2xl border
-        bg-white/70 dark:bg-white/[0.05]
-        border-black/[0.08] dark:border-white/[0.08]
-        backdrop-blur-xl
-        shadow-sm dark:shadow-none
+        marker-card overflow-hidden rounded-lg border
+        bg-white/70 dark:bg-white/[0.035]
+        border-slate-200 dark:border-white/[0.08]
+        backdrop-blur-md
         p-6
         transition-colors duration-300
         ${className}
