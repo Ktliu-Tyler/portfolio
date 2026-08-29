@@ -24,10 +24,12 @@ const projectsByYear: YearSection[] = [
   {
     yearKey: 'y2026',
     projects: [
+      { key: 'apcsa', link: 'https://github.com/Ktliu-Tyler/APCSA', image: null, status: 'public' as const },
       { key: 'portfolio', link: 'https://github.com/Ktliu-Tyler/portfolio', image: null, status: 'public' as const },
       { key: 'stock', link: 'https://github.com/Ktliu-Tyler/Stock-Analysis-Taiwan', image: '/images/data.png', status: 'public' as const },
       { key: 'motor', link: 'https://github.com/Ktliu-Tyler/Simplexmotion-pymodbusRS485', image: '/images/embedded.png', status: 'public' as const },
       { key: 'make_ntu', link: 'https://github.com/Ktliu-Tyler/MakeNTU_NXP_AVNET', image: '/images/experience/makentu-booth-jarvis.jpg', imagePosition: '48% 56%', status: 'public' as const },
+      { key: 'makentu_robot_face', link: 'https://github.com/Ktliu-Tyler/MAKENTU_robotFace', image: '/images/experience/makentu-prototype.jpg', status: 'public' as const },
       { key: 'can', link: 'https://github.com/Ktliu-Tyler/CANdecoder', image: '/images/experience/ntu-racing-sunset-car.jpg', imagePosition: '64% 82%', status: 'public' as const },
       { key: 'gps_nturt', link: 'https://github.com/Ktliu-Tyler/GPS_nturt', image: '/images/experience/ntu-racing-rtk-gps.jpg', status: 'public' as const },
       { key: 'remote_monitor', link: 'https://github.com/Ktliu-Tyler/nturacing_remote_monitor', image: '/images/experience/ntu-racing-dashboard.jpg', status: 'public' as const },
@@ -36,18 +38,29 @@ const projectsByYear: YearSection[] = [
   {
     yearKey: 'y2025',
     projects: [
+      { key: 'rpi_desktop', link: 'https://github.com/Ktliu-Tyler/RPI_Desktop', image: '/images/experience/ntu-racing-dashboard.jpg', status: 'public' as const },
+      { key: 'docker_learning', link: 'https://github.com/Ktliu-Tyler/docker_learning_record', image: null, status: 'public' as const },
       { key: 'rpi_can', link: 'https://github.com/Ktliu-Tyler/rpi_can_monitor', image: '/images/experience/ntu-racing-dashboard.jpg', status: 'public' as const },
       { key: 'gps_tracker', link: 'https://github.com/Ktliu-Tyler/GPS_tracker', image: '/images/embedded.png', status: 'public' as const },
       { key: 'hospital', link: 'https://github.com/Ktliu-Tyler/HospitalBED_transportation-system', image: null, status: 'public' as const },
       { key: 'iot_ctrl', link: 'https://github.com/Ktliu-Tyler/IOT_controller', image: '/images/experience/bouteleur-ui.jpg', status: 'public' as const },
+      { key: 'inventor_ferris_wheel', link: 'https://github.com/Ktliu-Tyler/Inventor_Ferris_wheel', image: null, status: 'public' as const },
     ],
   },
   {
     yearKey: 'y2024',
     projects: [
       { key: 'sdl', link: 'https://github.com/Ktliu-Tyler/SDL_env_clion', image: null, status: 'public' as const },
+      { key: 'sdl_game', link: 'https://github.com/Ktliu-Tyler/SDL_game', image: '/images/experience/goblin-menu.jpg', status: 'public' as const },
       { key: 'goblin', link: 'https://github.com/Ktliu-Tyler/GOBLIN_GAME', image: '/images/experience/goblin-menu.jpg', status: 'public' as const },
       { key: 'ir_iot', link: 'https://github.com/Ktliu-Tyler/IRremote_ESP32886_IOT', image: '/images/experience/bouteleur-device.jpg', status: 'public' as const },
+    ],
+  },
+  {
+    yearKey: 'y2023',
+    projects: [
+      { key: 'homework', link: 'https://github.com/Ktliu-Tyler/HOMEWORK', image: null, status: 'public' as const },
+      { key: 'nothing', link: 'https://github.com/Ktliu-Tyler/nothing', image: null, status: 'public' as const },
     ],
   },
   {
@@ -64,6 +77,7 @@ const projectsByYear: YearSection[] = [
       { key: 'pixy_car', link: 'https://github.com/Ktliu-Tyler/Pixy-Line-tracking-drifting-car', image: '/images/embedded.png', status: 'public' as const },
       { key: 'space_travel', link: 'https://github.com/Ktliu-Tyler/Space_travel', image: null, status: 'public' as const },
       { key: 'space_fighter', link: 'https://github.com/Ktliu-Tyler/Space-Fighter', image: '/images/game.png', status: 'public' as const },
+      { key: 'cnn_orientation', link: 'https://github.com/Ktliu-Tyler/CNN-Orientation-Events-', image: '/images/data.png', status: 'public' as const },
       { key: 'laser', link: 'https://github.com/Ktliu-Tyler/LaserRecognition', image: null, status: 'public' as const },
     ],
   },
@@ -142,6 +156,7 @@ export default function ProjectsPage() {
           <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
             <button
               onClick={() => setActiveYear(null)}
+              aria-pressed={activeYear === null}
               className={`
                 flex-shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition-colors duration-200
                 ${
@@ -157,6 +172,7 @@ export default function ProjectsPage() {
               <button
                 key={yk}
                 onClick={() => setActiveYear(yk === activeYear ? null : yk)}
+                aria-pressed={activeYear === yk}
                 className={`
                   flex-shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition-colors duration-200
                   ${

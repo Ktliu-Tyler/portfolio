@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 interface TypewriterEffectProps {
   texts: string[]
@@ -23,6 +23,7 @@ export default function TypewriterEffect({
   const [isDeleting, setIsDeleting] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const shouldReduceMotion = useReducedMotion()
 
   const currentFullText = texts[textIndex] || ''
 
@@ -56,19 +57,34 @@ export default function TypewriterEffect({
   }, [displayText, isDeleting, isPaused, currentFullText, texts.length, speed, deleteSpeed, pauseTime])
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      setDisplayText(currentFullText)
+      return
+    }
+
     timeoutRef.current = setTimeout(tick, speed)
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
     }
-  }, [tick, speed])
+  }, [currentFullText, shouldReduceMotion, tick, speed])
+
+  if (shouldReduceMotion) {
+    return (
+      <span className={`inline-flex max-w-full items-baseline ${className}`}>
+        <span className="min-w-0 break-words text-slate-700 dark:text-slate-200">
+          {currentFullText}
+        </span>
+      </span>
+    )
+  }
 
   return (
-    <span className={`inline-flex items-baseline ${className}`}>
-      <span className="text-slate-700 dark:text-slate-200">
+    <span className={`inline-flex max-w-full items-baseline ${className}`}>
+      <span className="min-w-0 break-words text-slate-700 dark:text-slate-200">
         {displayText}
       </span>
       <motion.span
-        className="relative top-[0.1em] ml-1 inline-block h-[1em] w-px self-stretch bg-slate-500 dark:bg-slate-300"
+        className="relative top-[0.1em] ml-1 inline-block h-[1em] w-px shrink-0 self-stretch bg-slate-500 dark:bg-slate-300"
         animate={{ opacity: [1, 0, 1] }}
         transition={{
           duration: 0.8,

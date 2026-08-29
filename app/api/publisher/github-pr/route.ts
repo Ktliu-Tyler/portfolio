@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { PublisherDraft } from '@/lib/publisher'
+import { validatePublisherRequest } from '@/lib/publisherAuth'
 
 export const runtime = 'nodejs'
 
@@ -16,23 +17,6 @@ interface GitContentResponse {
 interface PullRequestResponse {
   html_url?: string
   number?: number
-}
-
-function unauthorized() {
-  return NextResponse.json(
-    { error: 'Publisher token is required.' },
-    { status: 401 },
-  )
-}
-
-function validateAuth(req: Request) {
-  const expectedToken = process.env.PUBLISHER_AUTH_TOKEN
-
-  if (!expectedToken) {
-    return null
-  }
-
-  return req.headers.get('x-publisher-token') === expectedToken ? null : unauthorized()
 }
 
 function isUploadedFile(value: FormDataEntryValue): value is File {
@@ -175,7 +159,7 @@ function publishBody(draft: PublisherDraft) {
 }
 
 export async function POST(req: Request) {
-  const authError = validateAuth(req)
+  const authError = validatePublisherRequest(req)
 
   if (authError) {
     return authError

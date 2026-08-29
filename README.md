@@ -37,9 +37,10 @@ npm run build
 
 The publisher reads uploaded sources, generates a categorized article draft, and exports MDX that the blog can read from `content/blog/*.mdx`.
 
-Optional environment variables:
+Site and publishing environment variables:
 
 ```bash
+NEXT_PUBLIC_SITE_URL=https://portfolio-5wie.vercel.app
 OPENAI_API_KEY=
 OPENAI_MODEL=gpt-5.2
 PUBLISHER_AUTH_TOKEN=
@@ -49,7 +50,7 @@ PUBLISHER_GITHUB_REPO=
 PUBLISHER_GITHUB_BASE_BRANCH=main
 ```
 
-Without `OPENAI_API_KEY`, the workbench still creates a local heuristic draft. With GitHub configuration, the `Open PR` action creates a branch and pull request instead of pushing directly to production.
+`PUBLISHER_AUTH_TOKEN` is required before the private publishing API will run. Without `OPENAI_API_KEY`, the workbench still creates a local heuristic draft. With GitHub configuration, the `Open PR` action creates a branch and pull request instead of pushing directly to production.
 
 ## Maintenance Documents
 

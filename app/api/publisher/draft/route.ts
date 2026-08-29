@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { PublisherCategory, PublisherDraft, RepoSignal } from '@/lib/publisher'
+import { validatePublisherRequest } from '@/lib/publisherAuth'
 import {
   PublisherDraftInput,
   UploadedFileSignal,
@@ -48,23 +49,6 @@ const categories: Array<PublisherCategory | 'auto'> = [
   'life-record',
   'case-study',
 ]
-
-function unauthorized() {
-  return NextResponse.json(
-    { error: 'Publisher token is required.' },
-    { status: 401 },
-  )
-}
-
-function validateAuth(req: Request) {
-  const expectedToken = process.env.PUBLISHER_AUTH_TOKEN
-
-  if (!expectedToken) {
-    return null
-  }
-
-  return req.headers.get('x-publisher-token') === expectedToken ? null : unauthorized()
-}
 
 function stringField(form: FormData, name: string) {
   const value = form.get(name)
@@ -359,7 +343,7 @@ function errorMessage(error: unknown) {
 }
 
 export async function POST(req: Request) {
-  const authError = validateAuth(req)
+  const authError = validatePublisherRequest(req)
 
   if (authError) {
     return authError

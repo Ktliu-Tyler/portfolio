@@ -10,6 +10,7 @@ interface AnimatedSectionProps {
   direction?: Direction
   delay?: number
   className?: string
+  id?: string
 }
 
 const directionVariants: Record<Direction, Variants> = {
@@ -40,11 +41,13 @@ export default function AnimatedSection({
   direction = 'up',
   delay = 0,
   className = '',
+  id,
 }: AnimatedSectionProps) {
   const variants = directionVariants[direction]
 
   return (
     <motion.div
+      id={id}
       className={className}
       initial="hidden"
       whileInView="visible"

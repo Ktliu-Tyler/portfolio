@@ -2,21 +2,55 @@ import type { Metadata } from 'next'
 import { LanguageProvider } from '@/lib/i18n'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { absoluteUrl, siteDescription, siteTitle, siteUrl } from '@/lib/site'
 import './globals.css'
 
 /* ── Metadata ────────────────────────────────────────────────────── */
 
 export const metadata: Metadata = {
-  title: 'Tyler Liu | Engineering, Embedded Systems & Experience Records',
-  description:
-    'Portfolio and experience records of Tyler Liu, a National Taiwan University mechanical engineering student focused on control, embedded systems, vehicle telemetry, haptics, and intelligent mechatronics.',
+  metadataBase: new URL(siteUrl),
+  applicationName: 'Tyler Liu Portfolio',
+  title: {
+    default: siteTitle,
+    template: '%s | Tyler Liu',
+  },
+  description: siteDescription,
+  authors: [{ name: 'Tyler Liu', url: siteUrl }],
+  creator: 'Tyler Liu',
+  keywords: [
+    'Tyler Liu',
+    'embedded systems',
+    'vehicle telemetry',
+    'haptics',
+    'NTU Racing',
+    'mechanical engineering',
+    'IoT',
+  ],
   icons: { icon: '/favicon.ico' },
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Tyler Liu | Engineering, Embedded Systems & Experience Records',
-    description:
-      'Research, racing electronics, embedded systems, course projects, honors, and personal records by Tyler Liu.',
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: 'Tyler Liu Portfolio',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: absoluteUrl('/og.png'),
+        width: 1200,
+        height: 630,
+        alt: 'Tyler Liu technical portfolio preview',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteTitle,
+    description: siteDescription,
+    images: [absoluteUrl('/og.png')],
   },
 }
 

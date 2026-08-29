@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -19,6 +19,7 @@ const links: NavLink[] = [
   { href: '/projects', labelKey: 'nav.projects' },
   { href: '/experience', labelKey: 'nav.experience' },
   { href: '/blog', labelKey: 'nav.blog' },
+  { href: '/#contact', labelKey: 'nav.contact' },
 ]
 
 export default function Navbar() {
@@ -27,32 +28,30 @@ export default function Navbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [visible, setVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
   const [hasScrolled, setHasScrolled] = useState(false)
-
-  const handleScroll = useCallback(() => {
-    const currentY = window.scrollY
-
-    setHasScrolled(currentY > 10)
-
-    if (currentY < 10) {
-      setVisible(true)
-    } else if (currentY > lastScrollY && currentY > 80) {
-      setVisible(false)
-      setMobileOpen(false)
-    } else {
-      setVisible(true)
-    }
-
-    setLastScrollY(currentY)
-  }, [lastScrollY])
+  const lastScrollYRef = useRef(0)
 
   useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      const scrollingDown = currentY > lastScrollYRef.current
+
+      setHasScrolled(currentY > 10)
+      setVisible(currentY < 10 || !scrollingDown || currentY <= 80)
+
+      if (scrollingDown && currentY > 80) {
+        setMobileOpen(false)
+      }
+
+      lastScrollYRef.current = currentY
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
+  }, [])
 
   const isActive = (href: string) => {
+    if (href.includes('#')) return false
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)
   }

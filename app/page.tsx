@@ -16,6 +16,7 @@ import {
   Mail,
   MapPin,
   Monitor,
+  RadioTower,
   Wrench,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
@@ -101,6 +102,24 @@ const heroImages = [
   },
 ]
 
+const heroSignals = [
+  {
+    value: 'MakeNTU 1st',
+    labelKey: 'hero.signals.makentu',
+    icon: <Award className="h-4 w-4" />,
+  },
+  {
+    value: 'NTU Racing',
+    labelKey: 'hero.signals.racing',
+    icon: <RadioTower className="h-4 w-4" />,
+  },
+  {
+    value: 'ICROSS Lab',
+    labelKey: 'hero.signals.research',
+    icon: <Gauge className="h-4 w-4" />,
+  },
+]
+
 const profileItems = [
   {
     icon: <GraduationCap className="h-4 w-4" />,
@@ -150,7 +169,7 @@ export default function HomePage() {
               variants={fadeUpItem}
               className="editorial-kicker mb-5 text-xs font-medium uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400"
             >
-              Mechanical Engineering / Control / Embedded Systems
+              {t('hero.kicker')}
             </motion.p>
 
             <motion.h1
@@ -162,7 +181,7 @@ export default function HomePage() {
 
             <motion.div
               variants={fadeUpItem}
-              className="mt-6 min-h-9 text-xl font-medium text-slate-700 dark:text-slate-200 sm:text-2xl"
+              className="mt-6 min-h-16 max-w-2xl text-xl font-medium text-slate-700 dark:text-slate-200 sm:min-h-9 sm:text-2xl"
             >
               <TypewriterEffect
                 texts={[
@@ -202,6 +221,28 @@ export default function HomePage() {
               >
                 {t('hero.cta_experience')}
               </Link>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUpItem}
+              className="mt-8 grid gap-3 sm:grid-cols-3"
+            >
+              {heroSignals.map((signal) => (
+                <div
+                  key={signal.value}
+                  className="marker-card rounded-lg border border-slate-200 bg-white/70 p-4 dark:border-white/[0.08] dark:bg-white/[0.035]"
+                >
+                  <span className="marker-icon-box inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 dark:border-white/[0.08]">
+                    {signal.icon}
+                  </span>
+                  <p className="mt-3 text-sm font-medium text-slate-950 dark:text-white">
+                    {signal.value}
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
+                    {t(signal.labelKey)}
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </div>
 
@@ -306,7 +347,9 @@ export default function HomePage() {
         </BentoGrid>
       </AnimatedSection>
 
-      <AnimatedSection className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-20 dark:border-white/[0.08] sm:px-6 sm:py-28">
+      <AnimatedSection
+        className="marker-section mx-auto max-w-6xl scroll-mt-24 border-t border-slate-200/80 px-4 py-20 dark:border-white/[0.08] sm:px-6 sm:py-28"
+      >
         <div className="mb-10 grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
@@ -455,7 +498,7 @@ export default function HomePage() {
       <AnimatedSection className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-20 dark:border-white/[0.08] sm:px-6 sm:py-28">
         <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 dark:border-white/[0.08] dark:bg-white/[0.08] lg:grid-cols-4">
           {[
-            { value: <CountUp end={18} />, label: t('stats.projects') },
+            { value: <CountUp end={30} />, label: t('stats.projects') },
             { value: <CountUp end={500} suffix="+" />, label: t('stats.hours') },
             { value: <CountUp end={10} suffix="+" />, label: t('stats.techs') },
             { value: <CountUp end={4} />, label: t('stats.passion') },
@@ -470,7 +513,7 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-20 dark:border-white/[0.08] sm:px-6 sm:py-28">
+      <AnimatedSection id="contact" className="marker-section mx-auto max-w-6xl scroll-mt-24 border-t border-slate-200/80 px-4 py-20 dark:border-white/[0.08] sm:px-6 sm:py-28">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">

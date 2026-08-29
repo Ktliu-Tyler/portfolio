@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import ExperienceDetailClient from '@/components/ExperienceDetailClient'
-import { getExperienceEntry, getExperienceSlugs } from '@/lib/experience'
+import { absoluteUrl } from '@/lib/site'
+import { getEntryCoverImage, getExperienceEntry, getExperienceSlugs, localized } from '@/lib/experience'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
@@ -19,9 +20,36 @@ export async function generateMetadata({
     return {}
   }
 
+  const image = getEntryCoverImage(entry)
+  const images = image
+    ? [
+        {
+          url: absoluteUrl(image.src),
+          width: 1200,
+          height: 630,
+          alt: localized(image.alt, 'en'),
+        },
+      ]
+    : []
+
   return {
-    title: `${entry.title.en} | Tyler Liu`,
+    title: entry.title.en,
     description: entry.summary.en,
+    alternates: {
+      canonical: `/experience/${slug}`,
+    },
+    openGraph: {
+      title: `${entry.title.en} | Tyler Liu`,
+      description: entry.summary.en,
+      url: absoluteUrl(`/experience/${slug}`),
+      images,
+    },
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title: `${entry.title.en} | Tyler Liu`,
+      description: entry.summary.en,
+      images: image ? images.map((item) => item.url) : [],
+    },
   }
 }
 

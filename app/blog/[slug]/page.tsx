@@ -1,10 +1,57 @@
 import BlogArticleLayout from '@/components/BlogArticleLayout'
 import MarkdownArticleContent from '@/components/MarkdownArticleContent'
 import { getArticleBySlug, getGeneratedArticleSlugs } from '@/lib/contentArticles'
+import { absoluteUrl } from '@/lib/site'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
   return getGeneratedArticleSlugs().map((slug) => ({ slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const result = getArticleBySlug(slug)
+
+  if (!result) {
+    return {}
+  }
+
+  const { article } = result
+  const image = absoluteUrl(article.image)
+
+  return {
+    title: article.title,
+    description: article.excerpt,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
+    openGraph: {
+      title: `${article.title} | Tyler Liu`,
+      description: article.excerpt,
+      url: absoluteUrl(`/blog/${slug}`),
+      type: 'article',
+      publishedTime: article.date,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${article.title} | Tyler Liu`,
+      description: article.excerpt,
+      images: [image],
+    },
+  }
 }
 
 export default async function ArticlePage({
