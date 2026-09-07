@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogPage() {
-  return <BlogIndexClient articles={getAllArticleSummaries()} />
+export const dynamic = 'force-dynamic'
+
+export default async function BlogPage() {
+  return <BlogIndexClient articles={await getAllArticleSummaries()} />
 }

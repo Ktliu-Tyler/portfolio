@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.admin-surface { color: var(--text-primary); font-size: 1rem; }
+.admin-panel { border: 1px solid var(--glass-border); border-radius: 1rem; background: var(--glass-bg); }
+.admin-input { width: 100%; min-height: 46px; border: 1px solid var(--glass-border); border-radius: .5rem; background: var(--bg-secondary); color: var(--text-primary); padding: .65rem .8rem; font-size: 1rem; }
+.admin-input.pl-10 { padding-left: 2.5rem; }
+.admin-input:focus-visible, .admin-surface button:focus-visible, .admin-surface a:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 3px; }
+.admin-primary, .admin-secondary { display: inline-flex; align-items: center; gap: .5rem; min-height: 42px; border-radius: .5rem; padding: .6rem .9rem; font-size: .875rem; font-weight: 500; transition: background-color .15s; }
+.admin-primary { background: var(--accent-primary); color: #101725; }
+.light .admin-primary { color: white; }
+.admin-secondary { border: 1px solid var(--glass-border); background: var(--glass-bg); }
+.admin-secondary:hover { background: var(--glass-bg-hover); }
+.admin-surface button:disabled { opacity: .5; cursor: wait; }
+.admin-tab { min-height: 42px; border-radius: .5rem; padding: .55rem .9rem; font-size: .875rem; color: var(--text-secondary); border: 1px solid transparent; }
+.admin-tab.active { color: var(--accent-primary); background: var(--marker-accent-soft); border-color: var(--marker-accent-line); }
+.admin-badge { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .5rem; border: 1px solid var(--glass-border); border-radius: 999px; font-size: .8125rem; color: var(--text-secondary); }
+.admin-badge.public { color: var(--accent-primary); background: var(--marker-accent-soft); border-color: var(--marker-accent-line); }
+.admin-emblem { display: inline-flex; padding: 1rem; border-radius: 1rem; color: var(--accent-primary); background: var(--marker-accent-soft); }
+.admin-error { color: #fca5a5; background: rgb(239 68 68 / .08); border: 1px solid rgb(239 68 68 / .3); border-radius: .5rem; padding: .75rem 1rem; font-size: .875rem; line-height: 1.6; }
+.light .admin-error { color: #b91c1c; }
+.admin-success { color: var(--text-primary); background: var(--marker-accent-soft); border: 1px solid var(--marker-accent-line); border-radius: .5rem; padding: .75rem 1rem; font-size: .875rem; line-height: 1.6; }
+
 /* ============================================================
    Design System — Custom Properties
    ============================================================ */

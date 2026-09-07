@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { PublisherCategory, PublisherDraft, RepoSignal } from '@/lib/publisher'
 import { validatePublisherRequest } from '@/lib/publisherAuth'
+import { privateHeaders } from '@/lib/adminAuth'
+import { RequestError, readLimitedForm, requestError } from '@/lib/requestSafety'
+import { parseGitHubRepository, validateUploads, providerFetch, providerJson } from '@/lib/publisherSafety'
 import {
   PublisherDraftInput,
   UploadedFileSignal,
@@ -108,27 +111,6 @@ function fileSignal(file: File): UploadedFileSignal {
   }
 }
 
-function parseGitHubUrl(value: string) {
-  const normalized = value.trim().replace(/\.git$/, '')
-
-  try {
-    const url = new URL(normalized)
-    const [owner, repo] = url.pathname.split('/').filter(Boolean)
-
-    if (url.hostname === 'github.com' && owner && repo) {
-      return { owner, repo }
-    }
-  } catch {
-    const match = normalized.match(/^([\w.-]+)\/([\w.-]+)$/)
-
-    if (match) {
-      return { owner: match[1], repo: match[2] }
-    }
-  }
-
-  return null
-}
-
 function githubHeaders() {
   const headers: HeadersInit = {
     Accept: 'application/vnd.github+json',
@@ -152,23 +134,19 @@ function decodeReadme(data: GitHubReadmeResponse) {
 }
 
 async function fetchRepoSignal(repoUrl: string): Promise<RepoSignal> {
-  const parsed = parseGitHubUrl(repoUrl)
-
-  if (!parsed) {
-    return { name: repoUrl, url: repoUrl, topics: [] }
-  }
+  const parsed = parseGitHubRepository(repoUrl)
 
   const apiBase = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}`
-  const repoResponse = await fetch(apiBase, { headers: githubHeaders() })
+  const repoResponse = await providerFetch(apiBase, { headers: githubHeaders() })
 
   if (!repoResponse.ok) {
     return { name: parsed.repo, url: repoUrl, topics: [] }
   }
 
-  const repoData = (await repoResponse.json()) as GitHubRepoResponse
-  const readmeResponse = await fetch(`${apiBase}/readme`, { headers: githubHeaders() })
+  const repoData = await providerJson<GitHubRepoResponse>(repoResponse)
+  const readmeResponse = await providerFetch(`${apiBase}/readme`, { headers: githubHeaders() })
   const readmeData = readmeResponse.ok
-    ? decodeReadme((await readmeResponse.json()) as GitHubReadmeResponse)
+    ? decodeReadme(await providerJson<GitHubReadmeResponse>(readmeResponse))
     : ''
 
   return {
@@ -242,7 +220,7 @@ async function uploadOpenAIFile(file: File, apiKey: string) {
   form.append('purpose', 'user_data')
   form.append('file', file, file.name)
 
-  const response = await fetch('https://api.openai.com/v1/files', {
+  const response = await providerFetch('https://api.openai.com/v1/files', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}` },
     body: form,
@@ -252,9 +230,9 @@ async function uploadOpenAIFile(file: File, apiKey: string) {
     throw new Error(`OpenAI file upload failed: ${response.status}`)
   }
 
-  const data = (await response.json()) as { id?: string }
+  const data = await providerJson<{ id?: string }>(response)
 
-  if (!data.id) {
+  if (!data.id || !/^file-[a-zA-Z0-9_-]+$/.test(data.id)) {
     throw new Error('OpenAI file upload did not return a file id.')
   }
 
@@ -302,57 +280,64 @@ async function generateOpenAIDraft(input: PublisherDraftInput, files: File[]) {
     { type: 'input_text', text: modelPrompt(input) },
   ]
 
-  for (const file of files) {
-    if (file.type.startsWith('image/') && file.size <= 12 * 1024 * 1024) {
-      content.push({ type: 'input_image', image_url: await imageDataUrl(file) })
-    } else if (file.size <= 25 * 1024 * 1024) {
-      const fileId = await uploadOpenAIFile(file, apiKey)
-      content.push({ type: 'input_file', file_id: fileId })
+  const uploadedIds: string[] = []
+  try {
+    for (const file of files) {
+      if (file.type.startsWith('image/') && file.size <= 12 * 1024 * 1024) {
+        content.push({ type: 'input_image', image_url: await imageDataUrl(file) })
+      } else if (file.size <= 25 * 1024 * 1024) {
+        const fileId = await uploadOpenAIFile(file, apiKey)
+        uploadedIds.push(fileId)
+        content.push({ type: 'input_file', file_id: fileId })
+      }
     }
+
+    const response = await providerFetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: process.env.OPENAI_MODEL ?? 'gpt-5.2',
+        input: [{ role: 'user', content }],
+        max_output_tokens: 5000,
+        store: false,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`OpenAI draft generation failed: ${response.status}`)
+    }
+
+    const responseBody = await providerJson<OpenAIResponseBody>(response)
+    const text = extractOpenAIText(responseBody)
+
+    if (!text) {
+      throw new Error('OpenAI draft generation returned an empty response.')
+    }
+
+    return parseJsonResponse(text)
+  } finally {
+    const cleanup = await Promise.allSettled(uploadedIds.map(id => providerFetch(`https://api.openai.com/v1/files/${encodeURIComponent(id)}`, { method: 'DELETE', headers: { Authorization: `Bearer ${apiKey}` } })))
+    if (cleanup.some(result => result.status === 'rejected' || !result.value.ok)) throw new RequestError('OpenAI 暫存附件未能清除，請至 OpenAI 管理介面確認；本次已改為本機草稿。', 502)
   }
-
-  const response = await fetch('https://api.openai.com/v1/responses', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_MODEL ?? 'gpt-5.2',
-      input: [{ role: 'user', content }],
-      max_output_tokens: 5000,
-    }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`OpenAI draft generation failed: ${response.status}`)
-  }
-
-  const responseBody = (await response.json()) as OpenAIResponseBody
-  const text = extractOpenAIText(responseBody)
-
-  if (!text) {
-    throw new Error('OpenAI draft generation returned an empty response.')
-  }
-
-  return parseJsonResponse(text)
-}
-
-function errorMessage(error: unknown) {
-  return error instanceof Error ? error.message : 'Unknown error'
 }
 
 export async function POST(req: Request) {
-  const authError = validatePublisherRequest(req)
+  const authError = await validatePublisherRequest(req)
 
   if (authError) {
     return authError
   }
 
   try {
-    const form = await req.formData()
+    const form = await readLimitedForm(req)
     const files = form.getAll('files').filter(isUploadedFile)
-    const repoUrls = lines(stringField(form, 'repoUrls'))
+    await validateUploads(files)
+    const rawUrls = lines(stringField(form, 'repoUrls'))
+    if (rawUrls.length > 6 || stringField(form, 'notes').length > 50_000 || stringField(form, 'title').length > 300) throw new RequestError('最多 6 個儲存庫；筆記或標題過長。')
+    const repoUrls = rawUrls.map(value => parseGitHubRepository(value).url)
     const repoSignals = await Promise.all(repoUrls.map(fetchRepoSignal))
     const input: PublisherDraftInput = {
       notes: stringField(form, 'notes'),
@@ -366,23 +351,24 @@ export async function POST(req: Request) {
     }
 
     try {
-      const modelDraft = await generateOpenAIDraft(input, files)
+      const modelDraft = form.get('useAI') === 'true' ? await generateOpenAIDraft(input, files) : null
 
       if (modelDraft) {
-        return NextResponse.json({ draft: createDraftFromModel(input, modelDraft) })
+        return NextResponse.json({ draft: createDraftFromModel(input, modelDraft) }, { headers: privateHeaders })
       }
     } catch (error) {
       const draft = createHeuristicDraft(input)
       draft.confidenceNotes = [
         ...draft.confidenceNotes,
-        `OpenAI mode fell back to local draft generation: ${errorMessage(error)}`,
+        error instanceof RequestError ? error.message : 'AI 整理暫時無法使用，已改為本機草稿。',
       ]
 
-      return NextResponse.json({ draft })
+      return NextResponse.json({ draft }, { headers: privateHeaders })
     }
 
-    return NextResponse.json({ draft: createHeuristicDraft(input) })
+    return NextResponse.json({ draft: createHeuristicDraft(input) }, { headers: privateHeaders })
   } catch (error) {
-    return NextResponse.json({ error: errorMessage(error) }, { status: 500 })
+    const result = requestError(error, '草稿整理失敗，請稍後重試。')
+    return NextResponse.json({ error: result.error }, { status: result.status, headers: privateHeaders })
   }
 }

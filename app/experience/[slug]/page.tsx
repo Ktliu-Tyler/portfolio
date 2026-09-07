@@ -1,12 +1,11 @@
+import { publicExperiences } from '@/lib/contentStore'
 import type { Metadata } from 'next'
 import ExperienceDetailClient from '@/components/ExperienceDetailClient'
 import { absoluteUrl } from '@/lib/site'
-import { getEntryCoverImage, getExperienceEntry, getExperienceSlugs, localized } from '@/lib/experience'
+import { getEntryCoverImage, localized } from '@/lib/experience'
 import { notFound } from 'next/navigation'
 
-export function generateStaticParams() {
-  return getExperienceSlugs().map((slug) => ({ slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -14,7 +13,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const entry = getExperienceEntry(slug)
+  const entries = await publicExperiences()
+  const entry = entries.find(item => item.slug === slug)
 
   if (!entry) {
     return {}
@@ -59,12 +59,13 @@ export default async function ExperienceDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const entry = getExperienceEntry(slug)
+  const entries = await publicExperiences()
+  const entry = entries.find(item => item.slug === slug)
 
   if (!entry) {
     notFound()
   }
 
-  return <ExperienceDetailClient entry={entry} />
+  return <ExperienceDetailClient entry={entry} experienceEntries={entries} />
 }
 

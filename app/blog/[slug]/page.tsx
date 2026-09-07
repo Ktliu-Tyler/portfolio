@@ -1,13 +1,11 @@
 import BlogArticleLayout from '@/components/BlogArticleLayout'
 import MarkdownArticleContent from '@/components/MarkdownArticleContent'
-import { getArticleBySlug, getGeneratedArticleSlugs } from '@/lib/contentArticles'
+import { getArticleBySlug } from '@/lib/contentArticles'
 import { absoluteUrl } from '@/lib/site'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-export function generateStaticParams() {
-  return getGeneratedArticleSlugs().map((slug) => ({ slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -15,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const result = getArticleBySlug(slug)
+  const result = await getArticleBySlug(slug)
 
   if (!result) {
     return {}
@@ -60,7 +58,7 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const result = getArticleBySlug(slug)
+  const result = await getArticleBySlug(slug)
 
   if (!result) {
     notFound()

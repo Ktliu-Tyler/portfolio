@@ -1,70 +1,58 @@
 # Tyler Liu Portfolio
 
-Personal technical portfolio for software, embedded systems, vehicle telemetry, IoT, and data tooling work.
+Next.js 15 / React 18 / TypeScript / Tailwind CSS，沿用既有 Vercel 網站。
 
-The site is built with Next.js, TypeScript, Tailwind CSS, Framer Motion, Three.js, and lucide-react. It is intended to deploy from GitHub to Vercel.
-https://portfolio-5wie.vercel.app/
+## 本機使用
 
-## Local Development
-
-```bash
+```powershell
 npm install
 npm run dev
 ```
 
-Open:
+開啟 http://localhost:3000/admin 。已有本機管理帳號；初始密碼存放於 `.private/owner-access.txt`，請存入密碼管理器並在「帳號設定」更換。
 
-```text
-http://127.0.0.1:3000
+登入頁及管理導覽可選擇「繁體中文 / English」，並沿用前台的語言記憶。管理標籤、狀態、提示與預覽介面支援雙語；文章內文及草稿工具的「文章語言」獨立保留。
+
+- `/admin`：搜尋及篩選文章、作品、經歷，切換公開／私密，查看操作紀錄及下載私人備份。
+- `/admin/preview/[id]`：本人專用預覽，不會讓私密文章在公開網址出現。
+- `/admin/publisher`：從來源產生文章，儲存為私密草稿，之後在內容管理選擇公開。
+- `/admin/settings`：更改密碼，立即登出所有裝置。
+
+## 私人資料
+
+所有文章、作品資料、經歷和媒體存於 `.private/portfolio.db`。截至 2026-09-07 本次整理，共有 75 筆內容與 47 份圖片；其中包含新撰寫的 12 篇中文私密文章及 25 張配圖。獎狀／證明共 5 筆，固定私密。
+
+在管理介面選「文章」與「私密」，可閱讀新草稿及配圖。預覽包含來源、相關作品與發布前待確認事項。完整素材盤點及文章索引放在本機 `.private/editorial/README.md`，不隨 Git 或部署上傳。
+
+`.private/` 包含資料庫、原始內容備份、媒體備份和初始密碼，已排除 Git 與 Vercel 上傳。新 checkout 不含個人資料，需由私人備份還原。公開網站只從資料庫取得公開內容，不再讀取 `lib/articles.ts` 或 `content/blog` 的文章資料。
+
+```powershell
+npm run db:backup
+npm run db:restore -- .private/your-backup.json
+npm run admin:setup
 ```
 
-## Verification
+`db:restore` 僅接受空白內容資料庫，不覆蓋現有內容。`admin:setup` 不覆蓋現有帳號；遺失密碼時執行 `npm run admin:setup -- --reset` 產生新密碼並撤銷所有登入。備份不包含密碼雜湊或登入資訊。
 
-```bash
+## 驗證
+
+```powershell
 npm run lint
 npm run build
+npm run test:privacy
+npm run test:security
 ```
 
-## Main Routes
+隱私測試使用 3101 埠和獨立測試資料庫；不修改實際內容。測試涵蓋登入、權限、直接網址、圖片存取、公開／私密切換、私密草稿、操作紀錄、備份和登入失效。
 
-- `/` - portfolio home page
-- `/projects` - chronological project and development timeline
-- `/blog` - technical writing index
-- `/blog/[slug]` - generated technical articles
-- `/admin/publisher` - private draft workbench for turning PDFs, images, GitHub repos, and notes into MDX posts
+另有安全單元測試，檢查輸入大小、檔案類型、草稿解析、匯出路徑及外部請求限制。實際瀏覽器驗證可先執行 `npx tsx tests/browser-fixture.ts --serve`，在 3102 埠使用只有合成內容的獨立資料庫；測試帳號資訊存於 `.private/browser-audit-access.json`。
 
-## Personal Publishing Agent
+本次圖文整理可執行 `npx tsx tests/editorial.integration.ts`，以本機資料庫副本驗證新文章與圖片的權限；不修改實際內容或管理密碼。此測試需要已匯入的本機私人資料，並使用 3103 埠。
 
-The publisher reads uploaded sources, generates a categorized article draft, and exports MDX that the blog can read from `content/blog/*.mdx`.
+## 上線
 
-Site and publishing environment variables:
+本次僅完成本機版本，正式網站尚未更新。Vercel 必須使用遠端持久化資料庫，不能使用本機 SQLite 檔案。
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://portfolio-5wie.vercel.app
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-5.2
-PUBLISHER_AUTH_TOKEN=
-GITHUB_TOKEN=
-PUBLISHER_GITHUB_OWNER=
-PUBLISHER_GITHUB_REPO=
-PUBLISHER_GITHUB_BASE_BRANCH=main
-```
+完整步驟與日後優化建議：[私人管理與上線指南](docs/PRIVATE_ADMIN.md)。
 
-`PUBLISHER_AUTH_TOKEN` is required before the private publishing API will run. Without `OPENAI_API_KEY`, the workbench still creates a local heuristic draft. With GitHub configuration, the `Open PR` action creates a branch and pull request instead of pushing directly to production.
-
-## Maintenance Documents
-
-- [Work Log](docs/WORK_LOG.md)
-- [Development Workflow](docs/DEVELOPMENT_WORKFLOW.md)
-- [Error Log](docs/ERROR_LOG.md)
-- [Conversation Record](docs/CONVERSATION_RECORD.md)
-
-## Deployment
-
-The repository remote is configured for:
-
-```text
-git@github.com:Ktliu-Tyler/portfolio.git
-```
-
-Pushes to `main` are expected to be picked up by Vercel.
+2026-09-07 唯讀檢查確認正式站的舊獎狀圖片仍可直接取得，待新版上線與舊資產清理後重新驗證。完整結果見 [安全檢查報告](docs/SECURITY_REVIEW.md)；功能、順序與驗收條件見 [逐步優化清單](docs/OPTIMIZATION_ROADMAP.md)。

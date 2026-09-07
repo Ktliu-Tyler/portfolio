@@ -13,14 +13,13 @@ import {
 } from 'lucide-react'
 import {
   categoryLabels,
-  experienceEntries,
   getEntryDisplayImages,
   localized,
   type ExperienceEntry,
 } from '@/lib/experience'
 import { useTranslation } from '@/lib/i18n'
 
-export default function ExperienceDetailClient({ entry }: { entry: ExperienceEntry }) {
+export default function ExperienceDetailClient({ entry, experienceEntries = [] }: { entry: ExperienceEntry; experienceEntries?: ExperienceEntry[] }) {
   const { locale, t } = useTranslation()
   const gallery = getEntryDisplayImages(entry)
   const heroImage = gallery[0]

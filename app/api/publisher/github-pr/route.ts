@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { PublisherDraft } from '@/lib/publisher'
 import { validatePublisherRequest } from '@/lib/publisherAuth'
+import { privateHeaders } from '@/lib/adminAuth'
+import { readLimitedForm, requestError, RequestError } from '@/lib/requestSafety'
+import { validateExportDraft } from '@/lib/draftSafety'
+import { parseGitHubRepository, validateUploads, providerFetch, providerJson } from '@/lib/publisherSafety'
 
 export const runtime = 'nodejs'
 
@@ -36,17 +40,8 @@ function repoConfig() {
     return null
   }
 
-  return { owner, repo, baseBranch, token }
-}
-
-function validateDraft(value: unknown): PublisherDraft {
-  const draft = value as Partial<PublisherDraft>
-
-  if (!draft || !draft.slug || !draft.title || !draft.mdx) {
-    throw new Error('A complete draft is required before creating a PR.')
-  }
-
-  return draft as PublisherDraft
+  const target = parseGitHubRepository(`${owner}/${repo}`)
+  return { owner: target.owner, repo: target.repo, baseBranch, token }
 }
 
 function githubHeaders(token: string) {
@@ -63,7 +58,7 @@ async function githubRequest<T>(
   path: string,
   init: RequestInit = {},
 ) {
-  const response = await fetch(
+  const response = await providerFetch(
     `https://api.github.com/repos/${config.owner}/${config.repo}${path}`,
     {
       ...init,
@@ -72,11 +67,10 @@ async function githubRequest<T>(
   )
 
   if (!response.ok) {
-    const message = await response.text()
-    throw new Error(`GitHub request failed (${response.status}): ${message}`)
+    throw new Error(`GitHub request failed (${response.status}).`)
   }
 
-  return (await response.json()) as T
+  return providerJson<T>(response)
 }
 
 async function maybeFileSha(
@@ -84,7 +78,7 @@ async function maybeFileSha(
   filePath: string,
   branch: string,
 ) {
-  const response = await fetch(
+  const response = await providerFetch(
     `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}?ref=${encodeURIComponent(branch)}`,
     { headers: githubHeaders(config.token) },
   )
@@ -94,11 +88,10 @@ async function maybeFileSha(
   }
 
   if (!response.ok) {
-    const message = await response.text()
-    throw new Error(`GitHub content lookup failed (${response.status}): ${message}`)
+    throw new Error(`GitHub content lookup failed (${response.status}).`)
   }
 
-  const data = (await response.json()) as GitContentResponse
+  const data = await providerJson<GitContentResponse>(response)
 
   return data.sha
 }
@@ -128,7 +121,7 @@ async function putContent(
 async function createBranch(config: NonNullable<ReturnType<typeof repoConfig>>, branch: string) {
   const baseRef = await githubRequest<GitRefResponse>(
     config,
-    `/git/ref/heads/${config.baseBranch}`,
+    `/git/ref/heads/${encodeURIComponent(config.baseBranch)}`,
   )
   const sha = baseRef.object?.sha
 
@@ -159,31 +152,23 @@ function publishBody(draft: PublisherDraft) {
 }
 
 export async function POST(req: Request) {
-  const authError = validatePublisherRequest(req)
+  const authError = await validatePublisherRequest(req)
 
   if (authError) {
     return authError
   }
 
   try {
-    const config = repoConfig()
-
-    if (!config) {
-      return NextResponse.json(
-        {
-          error:
-            'Missing GITHUB_TOKEN and repository config. Set PUBLISHER_GITHUB_OWNER and PUBLISHER_GITHUB_REPO, or enable Vercel Git system env vars.',
-        },
-        { status: 400 },
-      )
-    }
-
-    const form = await req.formData()
+    const form = await readLimitedForm(req)
     const draftField = form.get('draft')
-    const draft = validateDraft(
-      typeof draftField === 'string' ? JSON.parse(draftField) : null,
-    )
+    let payload: unknown
+    try { payload = typeof draftField === 'string' ? JSON.parse(draftField) : null } catch { throw new RequestError('草稿 JSON 格式不正確。') }
+    const draft = validateExportDraft(payload)
     const files = form.getAll('files').filter(isUploadedFile)
+    await validateUploads(files)
+    if (draft.assetPlan.some(asset => !files.some(file => file.name === asset.originalName))) throw new RequestError('草稿引用的附件未完整提供。')
+    const config = repoConfig()
+    if (!config) return NextResponse.json({ error: '尚未設定 GitHub 匯出服務。' }, { status: 503, headers: privateHeaders })
     const branch = `publisher/${draft.slug}-${Date.now()}`
     await createBranch(config, branch)
     await putContent(
@@ -222,11 +207,9 @@ export async function POST(req: Request) {
       prUrl: pullRequest.html_url,
       number: pullRequest.number,
       branch,
-    })
+    }, { headers: privateHeaders })
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 },
-    )
+    const result = requestError(error, 'GitHub 匯出失敗，請稍後重試。')
+    return NextResponse.json({ error: result.error }, { status: result.status, headers: privateHeaders })
   }
 }

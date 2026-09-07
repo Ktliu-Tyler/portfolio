@@ -35,6 +35,7 @@ export default function Footer() {
           <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
             Copyright 2026 Tyler. {t('footer.rights')}.
           </p>
+          <a href="/admin" className="mt-3 inline-block text-sm text-slate-500 hover:underline dark:text-slate-400">{t('footer.admin_login')}</a>
         </div>
 
         <div className="flex items-center gap-2">
@@ -52,7 +53,7 @@ export default function Footer() {
           ))}
           <button
             onClick={scrollToTop}
-            aria-label="Scroll to top"
+            aria-label={t('footer.back_to_top')}
             className="marker-icon-button inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
           >
             <ArrowUp className="h-4 w-4" />

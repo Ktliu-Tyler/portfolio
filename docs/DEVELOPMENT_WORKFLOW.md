@@ -1,6 +1,8 @@
 # Development Workflow
 
-Last updated: 2026-05-24
+Last updated: 2026-09-07
+
+> Content workflow changed: use the private admin and database described in [PRIVATE_ADMIN.md](PRIVATE_ADMIN.md). The legacy static-file content instructions below are historical and no longer publish content. Restore private data before running a fresh checkout. Do not deploy this database-dependent version before provisioning a remote database.
 
 ## 1. Local Setup
 

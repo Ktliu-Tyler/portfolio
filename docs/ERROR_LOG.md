@@ -88,3 +88,24 @@ Last updated: 2026-05-24
 - Cause: The typewriter used every role key from the hero translation group.
 - Fix: Removed the third role from the home-page typewriter list so the cover no longer cycles through that label.
 - Verification: The remaining typewriter list contains software development, embedded systems, and IoT systems roles.
+
+
+## 2026-09-07 — 管理登入與私人預覽驗證
+
+- Next.js 本機 request.url 的 localhost 正規化，會與瀏覽器使用的 127.0.0.1 Origin 不同。僅對明確 loopback Host 做本機來源比對，正式部署使用 ADMIN_ORIGIN，跨來源請求仍拒絕。
+- 預覽頁的 RSC 動態參數保留百分比編碼，造成 article%3A... 無法查到資料。先解碼並驗證 kind:slug 格式後再查詢，私人文章與獎狀預覽均已通過 HTTP 測試。
+- 更新 Next.js 至 15.5.25，並使用 PostCSS 8.5.28 排除既有依賴公告；以 npm 修正過時的巢狀 lock entry 後 audit 為零。
+
+## 2026-09-07 — 安全邊界修正
+
+- 草稿儲存原本使用 gray-matter 解析可控標頭；其可選 JavaScript 引擎能執行程式。改為非執行式標頭移除，拒絕語言標頭與不完整標頭，並加入回歸測試。
+- 非同步密碼驗證可能在密碼已變更後才完成。改以帳號版本與寫入交易重查，session 綁定版本；同時改密碼只有一個請求能成功。
+- 匯出路徑及附件驗證現在於任何 GitHub 寫入前完成；路徑越界、檔案偽裝、過大或格式錯誤的請求由安全錯誤回應拒絕。
+- 安全單元測試初次建置的 headers 參數推導過窄；補上 Record<string,string>，後續正式建置與 11 項測試通過。
+- 正式站舊獎狀公開問題尚未解決：本機移除 public 資產無法改變已部署版本，需按 SECURITY_REVIEW.md 的上線檢查處理。
+
+## 2026-09-07 — 私人圖文整理
+
+- PDF 抽取的主控台 CP950 無法輸出個別字元，改以 UTF-8 輸出；文件內容存於私人工作目錄。
+- 管理預覽的來源 name 是選填欄位，初次建置產生型別錯誤；增加 url/type 備援名稱，後續建置及型別檢查通過。
+- 原報告印刷頁碼與 PDF 頁序相差一頁，已核對並修正新草稿的成績來源頁碼，保留兩種頁碼供審閱。

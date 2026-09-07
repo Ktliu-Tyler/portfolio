@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Personal Publishing | Tyler Liu',
+  title: '私人管理 / Private workspace',
   robots: {
     index: false,
     follow: false,

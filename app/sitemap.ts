@@ -1,16 +1,12 @@
 import type { MetadataRoute } from 'next'
-import { getGeneratedArticleSlugs } from '@/lib/contentArticles'
-import { getExperienceSlugs } from '@/lib/experience'
+import { publicRecords } from '@/lib/contentStore'
 import { siteUrl } from '@/lib/site'
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date()
-  const staticRoutes = ['/', '/projects', '/experience', '/blog']
-  const experienceRoutes = getExperienceSlugs().map((slug) => `/experience/${slug}`)
-  const articleRoutes = getGeneratedArticleSlugs().map((slug) => `/blog/${slug}`)
-
-  return [...staticRoutes, ...experienceRoutes, ...articleRoutes].map((route) => ({
-    url: `${siteUrl}${route}`,
-    lastModified: now,
-  }))
+export const dynamic = 'force-dynamic'
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [articles, experiences] = await Promise.all([publicRecords('article'), publicRecords('experience')])
+  return [
+    ...['/', '/projects', '/experience', '/blog'].map(route => ({ url: siteUrl + route })),
+    ...articles.map(item => ({ url: `${siteUrl}/blog/${item.slug}`, lastModified: item.updatedAt })),
+    ...experiences.map(item => ({ url: `${siteUrl}/experience/${item.slug}`, lastModified: item.updatedAt })),
+  ]
 }

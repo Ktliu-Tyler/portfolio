@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Sun, Moon } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n'
 
 export default function ThemeToggle() {
+  const { t } = useTranslation()
   const [dark, setDark] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -35,11 +37,11 @@ export default function ThemeToggle() {
     'relative flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white/70 text-slate-600 backdrop-blur-md transition-colors duration-200 hover:bg-slate-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.08]'
 
   if (!mounted) {
-    return <button aria-label="Toggle theme" className={buttonClass} />
+    return <button aria-label={t('nav.toggle_theme')} className={buttonClass} />
   }
 
   return (
-    <button onClick={toggle} aria-label="Toggle theme" className={buttonClass}>
+    <button onClick={toggle} aria-label={t('nav.toggle_theme')} className={buttonClass}>
       <motion.div
         key={dark ? 'dark' : 'light'}
         initial={{ rotate: -90, opacity: 0, scale: 0.5 }}

@@ -20,7 +20,6 @@ import AnimatedSection from '@/components/AnimatedSection'
 import {
   categoryLabels,
   categoryOrder,
-  experienceEntries,
   getEntryCoverImage,
   getEntryDisplayImages,
   localized,
@@ -104,7 +103,7 @@ function getSearchText(entry: ExperienceEntry, locale: Locale) {
     .toLocaleLowerCase()
 }
 
-export default function ExperienceIndexClient() {
+export default function ExperienceIndexClient({ experienceEntries }: { experienceEntries: ExperienceEntry[] }) {
   const { locale, t } = useTranslation()
   const [activeCategory, setActiveCategory] = useState<ExperienceCategory | 'all'>('all')
   const [activeSkill, setActiveSkill] = useState<string | 'all'>('all')
@@ -116,7 +115,7 @@ export default function ExperienceIndexClient() {
   const availableYears = useMemo(() => {
     const years = experienceEntries.flatMap(getEntryYears)
     return Array.from(new Set(years)).sort((a, b) => Number(b) - Number(a))
-  }, [])
+  }, [experienceEntries])
 
   const skillCounts = useMemo(() => {
     const counts = new Map<string, number>()
@@ -129,7 +128,7 @@ export default function ExperienceIndexClient() {
     return Array.from(counts.entries())
       .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
       .slice(0, 18)
-  }, [])
+  }, [experienceEntries])
 
   const normalizedQuery = query.trim().toLocaleLowerCase()
 
@@ -161,7 +160,7 @@ export default function ExperienceIndexClient() {
 
         return getLatestYear(b) - getLatestYear(a)
       })
-  }, [activeCategory, activeSkill, activeYear, locale, normalizedQuery, quickFilter, sortMode])
+  }, [experienceEntries, activeCategory, activeSkill, activeYear, locale, normalizedQuery, quickFilter, sortMode])
 
   const totalMediaCount = experienceEntries.reduce(
     (total, entry) => total + getEntryDisplayImages(entry).length,

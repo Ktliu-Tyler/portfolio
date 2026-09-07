@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { safeContentUrl } from '@/lib/safeUrl'
 
 type MarkdownBlock =
   | { type: 'heading'; level: 2 | 3; text: string }
@@ -147,7 +148,7 @@ function renderInline(text: string): ReactNode[] {
         parts.push(
           <Link
             key={`${token}-${match.index}`}
-            href={linkMatch[2]}
+            href={safeContentUrl(linkMatch[2])}
             target={linkMatch[2].startsWith('http') ? '_blank' : undefined}
             rel={linkMatch[2].startsWith('http') ? 'noopener noreferrer' : undefined}
             className="marker-link font-medium text-slate-950 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-600 dark:text-white dark:decoration-white/25 dark:hover:text-slate-300"

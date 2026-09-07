@@ -4,3 +4,8 @@ README.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.private
+tests
+*.db
+*.db-shm
+*.db-wal

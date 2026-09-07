@@ -8,6 +8,8 @@
 
 # next.js
 /.next/
+/.next-dev/
+/.next-test/
 /out/
 
 # production
@@ -32,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private content, database, exports and local owner credentials
+/.private/
+*.db
+*.db-shm
+*.db-wal

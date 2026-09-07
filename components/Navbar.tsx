@@ -114,7 +114,8 @@ export default function Navbar() {
 
           <button
             onClick={() => setMobileOpen((prev) => !prev)}
-            aria-label="Toggle mobile menu"
+            aria-label={t('nav.toggle_menu')}
+            aria-expanded={mobileOpen}
             className="flex h-9 w-9 items-center justify-center rounded-md text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06] md:hidden"
           >
             <AnimatePresence mode="wait">

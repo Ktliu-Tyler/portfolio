@@ -1,3 +1,4 @@
+import { publicExperiences } from '@/lib/contentStore'
 import type { Metadata } from 'next'
 import ExperienceIndexClient from '@/components/ExperienceIndexClient'
 import { absoluteUrl } from '@/lib/site'
@@ -25,6 +26,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ExperiencePage() {
-  return <ExperienceIndexClient />
+export const dynamic = 'force-dynamic'
+
+export default async function ExperiencePage() {
+  return <ExperienceIndexClient experienceEntries={await publicExperiences()} />
 }
