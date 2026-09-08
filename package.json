@@ -10,6 +10,7 @@
     "admin:setup": "tsx scripts/setup-owner.ts",
     "db:restore": "tsx scripts/restore-backup.ts",
     "db:backup": "tsx scripts/export-backup.ts",
+    "db:public-snapshot": "tsx scripts/export-public-snapshot.ts",
     "db:migrate-private": "tsx scripts/migrate-private-content.ts",
     "test:privacy": "tsx tests/privacy.integration.ts",
     "test:security": "tsx --test tests/security.unit.ts"

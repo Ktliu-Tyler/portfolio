@@ -4,15 +4,18 @@ import { readyDatabase } from './database'
 import type { ContentKind, ManagedContent, Visibility } from './contentTypes'
 import type { ExperienceEntry } from './experience'
 import { requireOwner } from './adminAuth'
+import { snapshotPublicRecord, snapshotPublicRecords, usesPublicSnapshot } from './publicSnapshot'
 
 function record(row: Row): ManagedContent {
   return { id: String(row.id), kind: row.kind as ContentKind, slug: String(row.slug), title: String(row.title), visibility: row.visibility as Visibility, updatedAt: String(row.updated_at), version: Number(row.version), data: JSON.parse(String(row.data)) }
 }
 export async function publicRecords(kind: ContentKind) {
+  if (usesPublicSnapshot()) return snapshotPublicRecords(kind)
   const rows = await (await readyDatabase()).execute({ sql: "SELECT * FROM content WHERE kind=? AND visibility='public' ORDER BY updated_at DESC, id", args: [kind] })
   return rows.rows.map(record)
 }
 export async function publicRecord(kind: ContentKind, slug: string) {
+  if (usesPublicSnapshot()) return snapshotPublicRecord(kind, slug)
   const rows = await (await readyDatabase()).execute({ sql: "SELECT * FROM content WHERE kind=? AND slug=? AND visibility='public'", args: [kind, slug] })
   return rows.rows[0] ? record(rows.rows[0]) : null
 }
