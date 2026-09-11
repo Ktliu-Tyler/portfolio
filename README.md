@@ -1,5 +1,47 @@
 # Tyler Liu Portfolio
 
+A personal website for presenting engineering projects, articles, and experiences, together with a private workspace for managing the material behind those public pages. It connects a public portfolio with an owner-only editorial workflow, making it possible to keep drafts and personal records separate from published work.
+
+## Main capabilities
+
+- Public pages for projects, blog articles, and experiences.
+- Traditional Chinese and English interface support.
+- Animated layouts, theme controls, and visual components built with React.
+- An authenticated administration area for searching, editing, previewing, and changing content visibility.
+- Private draft generation and a publishing workspace.
+- Database backups, restoration tools, and public-content snapshot export.
+
+## How the project is organized
+
+The application uses Next.js 15, React 18, TypeScript, and Tailwind CSS. Framer Motion and Three.js support the presentation layer. Content and media access are handled through server-side storage code using the libSQL client; local private data is kept outside the Git repository.
+
+The public pages and administration routes use the same content system with visibility checks. A fresh checkout does not contain the owner's private database or credentials. Hosted deployment requires a persistent remote database rather than relying on a local filesystem database.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| [app](app) | Public routes, administration routes, and API handlers |
+| [components](components) | Presentation and administration components |
+| [lib](lib) | Content storage, authentication, localization, and publishing logic |
+| [scripts](scripts) | Owner setup, backups, restoration, and content exports |
+| [tests](tests) | Privacy, security, editorial, and snapshot checks |
+| [docs/PRIVATE_ADMIN.md](docs/PRIVATE_ADMIN.md) | Administration and deployment details |
+| [.env.local.example](.env.local.example) | Configuration fields without private values |
+
+## Project context
+
+The repository records the development of both the public website and its private content workflow. It emphasizes presenting personal work clearly while controlling what becomes public. The original operating notes below preserve dated local-development and deployment observations; they should not be read as a live status report for the hosted site.
+
+## Original project notes
+
+The original documentation is retained below as a personal development record, including its original language, credits, illustrations, and historical instructions. Dates, paths, and environment details describe the original work.
+
+<details>
+<summary>Read the original documentation</summary>
+
+# Tyler Liu Portfolio
+
 Next.js 15 / React 18 / TypeScript / Tailwind CSS，沿用既有 Vercel 網站。
 
 ## 本機使用
@@ -56,3 +98,5 @@ npm run test:security
 完整步驟與日後優化建議：[私人管理與上線指南](docs/PRIVATE_ADMIN.md)。
 
 2026-09-07 唯讀檢查確認正式站的舊獎狀圖片仍可直接取得，待新版上線與舊資產清理後重新驗證。完整結果見 [安全檢查報告](docs/SECURITY_REVIEW.md)；功能、順序與驗收條件見 [逐步優化清單](docs/OPTIMIZATION_ROADMAP.md)。
+
+</details>
