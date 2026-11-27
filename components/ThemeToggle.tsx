@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Sun, Moon } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n'
 
@@ -33,24 +32,9 @@ export default function ThemeToggle() {
     localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
-  const buttonClass =
-    'relative flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white/70 text-slate-600 backdrop-blur-md transition-colors duration-200 hover:bg-slate-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.08]'
-
-  if (!mounted) {
-    return <button aria-label={t('nav.toggle_theme')} className={buttonClass} />
-  }
-
   return (
-    <button onClick={toggle} aria-label={t('nav.toggle_theme')} className={buttonClass}>
-      <motion.div
-        key={dark ? 'dark' : 'light'}
-        initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-        animate={{ rotate: 0, opacity: 1, scale: 1 }}
-        exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-        transition={{ duration: 0.25 }}
-      >
-        {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-      </motion.div>
+    <button type="button" onClick={toggle} aria-label={t('nav.toggle_theme')} className="site-control">
+      {mounted && (dark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />)}
     </button>
   )
 }

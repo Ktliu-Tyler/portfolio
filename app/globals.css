@@ -27,9 +27,9 @@
    ============================================================ */
 :root {
   /* Background */
-  --bg-primary: #0f1724;
-  --bg-secondary: #121a28;
-  --bg-tertiary: #182234;
+  --bg-primary: #191b1c;
+  --bg-secondary: #222425;
+  --bg-tertiary: #2b2d2e;
 
   /* Accent */
   --accent-primary: #f59e0b;
@@ -45,9 +45,9 @@
   --marker-chip-border: rgb(var(--marker-accent-rgb) / 0.22);
 
   /* Text */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
+  --text-primary: #f7f4ee;
+  --text-secondary: #cbc7bf;
+  --text-muted: #a6a29a;
 
   /* Glass */
   --glass-bg: rgba(255, 255, 255, 0.035);
@@ -73,13 +73,13 @@
 /* ---- Light mode overrides ---- */
 [data-theme='light'],
 .light {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f3f6fa;
-  --bg-tertiary: #e5eaf0;
+  --bg-primary: #f7f4ee;
+  --bg-secondary: #efebe3;
+  --bg-tertiary: #e6e1d8;
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-primary: #282725;
+  --text-secondary: #56534e;
+  --text-muted: #68645d;
 
   --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-bg-hover: rgba(255, 255, 255, 0.88);
@@ -113,9 +113,7 @@
   }
 
   body {
-    background:
-      linear-gradient(180deg, rgba(var(--marker-accent-rgb) / 0.07), transparent 18rem),
-      var(--bg-primary);
+    background: var(--bg-primary);
     color: var(--text-primary);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     transition:
@@ -146,18 +144,18 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--accent-primary);
+    background: var(--glass-border-hover);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-secondary);
+    background: var(--text-muted);
   }
 
   /* Firefox scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-primary) var(--bg-secondary);
+    scrollbar-color: var(--glass-border-hover) var(--bg-secondary);
   }
 }
 
@@ -294,68 +292,21 @@
 
   /* --- Editorial marker accents --- */
   .editorial-kicker {
-    align-items: center;
-    display: inline-flex;
-    gap: 0.75rem;
-  }
-
-  .editorial-kicker::before {
-    background: var(--marker-accent);
-    content: '';
-    display: inline-block;
-    height: 1px;
-    width: 2rem;
+    color: var(--text-muted);
   }
 
   .editorial-rule {
-    background: linear-gradient(90deg, var(--marker-accent), var(--marker-accent-hairline), transparent);
+    background: var(--glass-border);
     height: 1px;
-  }
-
-  .marker-section {
-    position: relative;
-  }
-
-  .marker-section::before {
-    background: var(--marker-accent);
-    content: '';
-    height: 1px;
-    left: 1rem;
-    position: absolute;
-    top: -1px;
-    width: min(5.5rem, calc(100% - 2rem));
-  }
-
-  @media (min-width: 640px) {
-    .marker-section::before {
-      left: 1.5rem;
-      width: 6.5rem;
-    }
-  }
-
-  .marker-card {
-    position: relative;
-  }
-
-  .marker-card::before {
-    background: linear-gradient(90deg, var(--marker-accent-line), transparent 68%);
-    content: '';
-    height: 1px;
-    left: 0;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
   }
 
   .marker-chip {
-    background: var(--marker-chip-bg);
-    border-color: var(--marker-chip-border) !important;
+    border-color: var(--glass-border) !important;
   }
 
   .marker-icon-box {
-    border-color: var(--marker-chip-border) !important;
-    color: var(--marker-accent) !important;
+    border-color: var(--glass-border) !important;
+    color: var(--text-secondary) !important;
   }
 
   .marker-line {
@@ -374,13 +325,12 @@
 
   .marker-button-primary {
     border: 1px solid var(--text-primary);
-    box-shadow: inset 0 -2px 0 var(--marker-accent);
     position: relative;
   }
 
   .marker-button-secondary,
   .marker-icon-button {
-    border-color: var(--marker-chip-border) !important;
+    border-color: var(--glass-border) !important;
   }
 
   .marker-button-secondary:hover,
@@ -416,12 +366,13 @@
     height: 1px;
     left: 0;
     position: absolute;
-    transition: width var(--transition-base);
-    width: 0;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    width: 8rem;
   }
 
   .marker-list-row:hover::before {
-    width: 8rem;
+    opacity: 1;
   }
 
   .marker-heading {
@@ -701,4 +652,38 @@
 [data-theme='light'] .prose-invert p,
 [data-theme='light'] .prose-invert li {
   color: #334155;
+}
+
+/* Shared navigation controls */
+@layer components {
+.site-control {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  padding-inline: 8px;
+  color: var(--text-secondary);
+  font-size: .875rem;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.site-control:hover,
+.site-nav-link:hover { background: var(--bg-secondary); color: var(--text-primary); }
+.site-nav-link { border-radius: 8px; color: var(--text-secondary); }
+.site-nav-link[aria-current='page'] {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--marker-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.site-header :focus-visible,
+.portfolio-home :focus-visible {
+  outline: 2px solid var(--marker-accent);
+  outline-offset: 4px;
+}
 }

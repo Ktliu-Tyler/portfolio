@@ -21,11 +21,11 @@ export default function Footer() {
   const { t } = useTranslation()
 
   const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0 })
   }, [])
 
   return (
-    <footer className="marker-section mt-24 border-t border-slate-200 dark:border-white/[0.08]">
+    <footer className="border-t border-[var(--glass-border)]">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-medium text-slate-950 dark:text-white">Tyler Liu</p>
@@ -46,7 +46,7 @@ export default function Footer() {
               target={href.startsWith('mailto') ? undefined : '_blank'}
               rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
               aria-label={label}
-              className="marker-icon-button inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
+              className="marker-icon-button inline-flex h-11 w-11 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
             >
               <Icon className="h-4 w-4" />
             </a>
@@ -54,7 +54,7 @@ export default function Footer() {
           <button
             onClick={scrollToTop}
             aria-label={t('footer.back_to_top')}
-            className="marker-icon-button inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
+            className="marker-icon-button inline-flex h-11 w-11 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-950 dark:border-white/[0.08] dark:text-slate-300 dark:hover:border-white/20 dark:hover:text-white"
           >
             <ArrowUp className="h-4 w-4" />
           </button>

@@ -20,6 +20,7 @@ export const translations: Record<Locale, TranslationData> = {
     hero: {
       kicker: '機械工程 / 控制 / 嵌入式系統',
       greeting: '你好，我是',
+      focus: '從硬體到程式，做出能運作的系統',
       name: 'Tyler',
       roles: {
         r1: '自動控制與智慧機電系統',
@@ -62,7 +63,7 @@ export const translations: Record<Locale, TranslationData> = {
     journey_preview: {
       title: '開發歷程',
       subtitle: '從第一行程式碼到現在',
-      cta: '查看完整歷程 →',
+      cta: '查看完整歷程',
       y2021: '起步探索',
       y2022: '多元嘗試',
       y2023: '深入開發',
@@ -223,6 +224,7 @@ export const translations: Record<Locale, TranslationData> = {
       kicker: 'Mechanical Engineering / Control / Embedded Systems',
       greeting: 'Hi, I\'m',
       name: 'Tyler',
+      focus: 'Building systems where hardware meets software',
       roles: {
         r1: 'Control and Intelligent Mechatronics',
         r2: 'Embedded Systems Developer',

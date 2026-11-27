@@ -46,7 +46,7 @@ export default function ExperienceDetailClient({ entry, experienceEntries = [] }
 
       <header className="mx-auto grid max-w-6xl gap-10 px-4 pb-14 sm:px-6 lg:grid-cols-[1fr_0.82fr] lg:items-end">
         <div>
-          <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <p className="editorial-kicker text-sm font-medium">
             {localized(categoryLabels[entry.category], locale)} / {entry.year}
           </p>
           <h1 className="mt-4 max-w-4xl text-4xl font-medium leading-tight tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
@@ -95,7 +95,7 @@ export default function ExperienceDetailClient({ entry, experienceEntries = [] }
       <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-14 dark:border-white/[0.08] sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[16rem_1fr]">
           <div>
-            <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <p className="editorial-kicker text-sm font-medium">
               Story
             </p>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white">
@@ -118,7 +118,7 @@ export default function ExperienceDetailClient({ entry, experienceEntries = [] }
       <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-14 dark:border-white/[0.08] sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[16rem_1fr]">
           <div>
-            <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <p className="editorial-kicker text-sm font-medium">
               Outcomes
             </p>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white">
@@ -156,7 +156,7 @@ export default function ExperienceDetailClient({ entry, experienceEntries = [] }
         <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-14 dark:border-white/[0.08] sm:px-6">
           <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+              <p className="editorial-kicker text-sm font-medium">
                 Records
               </p>
               <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white">
@@ -196,7 +196,7 @@ export default function ExperienceDetailClient({ entry, experienceEntries = [] }
         <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-14 dark:border-white/[0.08] sm:px-6 sm:pb-24">
           <div className="grid gap-10 lg:grid-cols-[16rem_1fr]">
             <div>
-              <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+              <p className="editorial-kicker text-sm font-medium">
                 Next
               </p>
               <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white">

@@ -214,7 +214,7 @@ export default function ExperienceIndexClient({ experienceEntries }: { experienc
     <main className="min-h-screen">
       <section className="mx-auto max-w-6xl px-4 pb-12 pt-28 sm:px-6 sm:pt-32">
         <AnimatedSection direction="up">
-          <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <p className="editorial-kicker text-sm font-medium">
             Experience records
           </p>
           <h1 className="mt-3 max-w-4xl text-4xl font-medium tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
@@ -268,7 +268,7 @@ export default function ExperienceIndexClient({ experienceEntries }: { experienc
 
       <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-16 dark:border-white/[0.08] sm:px-6">
         <div className="mb-8 max-w-3xl">
-          <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <p className="editorial-kicker text-sm font-medium">
             {t('experience.explorer_kicker')}
           </p>
           <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white sm:text-3xl">
@@ -587,7 +587,7 @@ export default function ExperienceIndexClient({ experienceEntries }: { experienc
       <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-16 dark:border-white/[0.08] sm:px-6">
         <div className="mb-8 grid gap-8 lg:grid-cols-[16rem_1fr]">
           <div>
-            <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <p className="editorial-kicker text-sm font-medium">
               Featured
             </p>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white sm:text-3xl">
@@ -641,7 +641,7 @@ export default function ExperienceIndexClient({ experienceEntries }: { experienc
       <section className="marker-section mx-auto max-w-6xl border-t border-slate-200/80 px-4 py-16 dark:border-white/[0.08] sm:px-6 sm:pb-24">
         <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+            <p className="editorial-kicker text-sm font-medium">
               Records
             </p>
             <h2 className="mt-3 text-2xl font-medium tracking-tight text-slate-950 dark:text-white sm:text-3xl">

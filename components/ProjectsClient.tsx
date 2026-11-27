@@ -67,7 +67,7 @@ export default function ProjectsClient({ projectsByYear }: { projectsByYear: Yea
     <main className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 pb-10 pt-28 sm:px-6 sm:pt-32">
         <AnimatedSection direction="up">
-          <p className="editorial-kicker text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+          <p className="editorial-kicker text-sm font-medium">
             Selected work
           </p>
           <h1 className="mt-3 max-w-3xl text-4xl font-medium tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
